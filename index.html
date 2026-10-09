@@ -3,46 +3,71 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nikhil Pawar · Software Engineer at AWS</title>
-  <meta name="description" content="Nikhil Pawar designs and builds distributed backend systems as a software engineer at Amazon Web Services.">
+  <title>Nikhil Pawar</title>
+  <meta name="description" content="Nikhil Pawar designs and builds distributed systems from the first sketch to production, currently as a software engineer at Amazon Web Services.">
   <link rel="canonical" href="https://nikhilpawar.dev/">
-  <meta name="theme-color" content="#f4f5f1">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#ebeae6">
+  <link rel="icon" href="favicon.png" type="image/png" sizes="128x128">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nikhilpawar.dev/">
-  <meta property="og:title" content="Nikhil Pawar · Software Engineer at AWS">
-  <meta property="og:description" content="I design and build distributed backend systems, currently as a software engineer at Amazon Web Services.">
+  <meta property="og:title" content="Nikhil Pawar">
+  <meta property="og:description" content="I design and build distributed systems from the first sketch to production, currently as a software engineer at Amazon Web Services">
   <meta name="twitter:card" content="summary">
 
-  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+  <script>
+    // Before first paint: mark JS as available and apply a saved dark theme.
+    (function () {
+      var root = document.documentElement;
+      root.classList.replace('no-js', 'js');
+      try { if (localStorage.getItem('theme') === 'dark') root.dataset.theme = 'dark'; } catch (e) {}
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Public+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&display=swap">
 
   <style>
     /*
      * Layout: on desktop the page is a fixed viewport and the content track
      * moves beneath it one section at a time. Phones and touch screens scroll
      * normally (the `.native` class). Without JavaScript everything is visible.
+     * Plum is the only colour, used for highlights. Light by default; a
+     * toggle in the top bar switches to dark and remembers the choice.
      */
     :root {
-      --bg: #f4f5f1;
-      --ink: #161816;
-      --muted: #62675f;
-      --line: #d3d6cf;
-      --accent: #7a2e4a;
+      color-scheme: light;
+      --bg: #ebeae6;
+      --ink: #141414;
+      --muted: #66665f;
+      --line: #d2d1cc;
+      --accent: #9b4767;
+      --tint: color-mix(in srgb, var(--accent) 22%, transparent);
 
-      --serif: 'Instrument Serif', Georgia, serif;
-      --sans: 'Public Sans', system-ui, sans-serif;
+      --sans: 'Hanken Grotesk', system-ui, sans-serif;
 
       --dur: 1000ms;
       --ease: cubic-bezier(.16, 1, .3, 1);
       --rise: 70px;
       --dim: .35;
-      --gutter: clamp(20px, 12vw, 200px);
+      --gutter: clamp(20px, 13vw, 200px);
     }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #151515;
+      --ink: #ededea;
+      --muted: #9a9a95;
+      --line: #2e2e2c;
+      --accent: #d08aa5;
+      --tint: color-mix(in srgb, var(--accent) 26%, transparent);
+    }
+
+    /* Switching theme cross-fades the whole page (where supported). */
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: .35s; }
 
     *, *::before, *::after { box-sizing: border-box; }
 
@@ -55,17 +80,42 @@
       background: var(--bg);
       color: var(--ink);
       font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
     }
 
+    ::selection { background: var(--accent); color: var(--bg); }
+
     a {
       color: inherit;
-      text-decoration: none;
-      background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
-      transition: background-size .35s var(--ease);
+      text-decoration: underline;
+      text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: .22em;
+      transition: color .2s, text-decoration-color .2s;
     }
-    a:hover, a:focus-visible { background-size: 100% 1px; }
+    a:hover { color: var(--accent); text-decoration-color: var(--accent); }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+    .accent { color: var(--accent); }
+
+    /*
+     * Pointing at (or tapping) the opening line sweeps a soft plum highlight
+     * across its plum phrases, left to right, both at once. Leaving pulls the
+     * highlights back from the right.
+     */
+    .hero .accent {
+      white-space: nowrap; /* keep each highlight in one piece */
+      margin: 0 -.12em;
+      padding: 0 .12em;
+      background: linear-gradient(var(--tint), var(--tint)) left center / 0% 100% no-repeat;
+      transition: background-size .55s cubic-bezier(.7, 0, .2, 1);
+    }
+    .hero h1.lit .accent { background-size: 100% 100%; }
+    @media (hover: hover) {
+      .hero h1:hover .accent { background-size: 100% 100%; }
+    }
 
     .visually-hidden {
       position: absolute;
@@ -86,36 +136,71 @@
       position: fixed;
       z-index: 5;
       inset: 0 0 auto;
-      padding: 30px var(--gutter);
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -.01em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px var(--gutter);
       background: linear-gradient(var(--bg) 60%, transparent);
     }
+    .name {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      text-decoration: none;
+      transition: color .25s;
+    }
+    .name:hover { color: var(--accent); }
+
+    .theme-toggle {
+      all: unset;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      margin: -10px -10px -10px 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--ink);
+      transition: color .2s, background-color .2s;
+    }
+    .theme-toggle:hover { color: var(--accent); background: var(--tint); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .theme-toggle svg {
+      grid-area: 1 / 1;
+      width: 19px;
+      height: 19px;
+      transition: opacity .3s, transform .5s var(--ease);
+    }
+    .theme-toggle .sun { opacity: 0; transform: rotate(-90deg) scale(.6); }
+    [data-theme="dark"] .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(.6); }
+    [data-theme="dark"] .theme-toggle .sun { opacity: 1; transform: none; }
 
     /* ---------- Track and sections ---------- */
 
     .track { padding: 0 var(--gutter) 18vh; }
 
     .hero {
-      max-width: 1040px;
-      padding-top: 32vh;
+      max-width: 960px;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-bottom: 4vh;
       transition: opacity var(--dur) var(--ease);
     }
 
     .hero h1 {
       margin: 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: clamp(36px, 5.6vw, 84px);
-      line-height: 1.06;
-      letter-spacing: -.025em;
+      font-weight: 500;
+      font-size: clamp(30px, 3.9vw, 54px);
+      line-height: 1.03;
+      letter-spacing: -.035em;
       text-wrap: balance;
     }
-    .hero h1 em { color: var(--accent); }
 
     .sec {
-      max-width: 1080px;
+      max-width: 1000px;
       margin-top: 22vh;
       display: flex;
       flex-direction: column;
@@ -123,28 +208,16 @@
     }
 
     .label {
-      margin: 0 0 36px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .16em;
-      text-transform: uppercase;
+      margin: 0 0 48px;
+      font-size: 15px;
+      font-weight: 600;
       color: var(--accent);
     }
 
-    /* A company: name on the left, its roles on the right. */
-    .co {
-      display: grid;
-      grid-template-columns: 260px minmax(0, 1fr);
-      gap: 56px;
-    }
-    .co + .co { margin-top: 64px; }
-
-    .co-id { display: flex; flex-direction: column; gap: 4px; }
-    .co-name { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.35; }
+    .co-name { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.35; letter-spacing: -.015em; }
     .co-where { font-size: 14px; color: var(--muted); }
 
-    .roles { display: flex; flex-direction: column; gap: 32px; }
-    .role { display: flex; flex-direction: column; gap: 8px; }
+    .role { display: flex; flex-direction: column; gap: 10px; }
 
     .role-top {
       display: flex;
@@ -157,7 +230,7 @@
     .role-title span { font-weight: 400; color: var(--muted); }
 
     .when {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--muted);
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
@@ -166,25 +239,86 @@
 
     .hook {
       margin: 0;
-      font-family: var(--serif);
       font-weight: 400;
-      font-size: clamp(23px, 2.2vw, 31px);
-      line-height: 1.25;
-      letter-spacing: -.005em;
+      font-size: clamp(18px, 1.45vw, 20px);
+      line-height: 1.32;
+      letter-spacing: -.015em;
     }
 
-    .degree { display: flex; flex-direction: column; gap: 8px; }
-    .degree + .degree { margin-top: 40px; }
-    .deg-meta { font-size: 15px; font-weight: 600; }
-    .deg-meta span { font-weight: 400; color: var(--muted); }
+    /*
+     * Experience timeline: a year and a dot for each role on a thin rail,
+     * then the company (on its first role only) and the role itself.
+     * The rail draws downward when the section arrives.
+     */
+    .timeline {
+      --rail: 64px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+    }
+    .tl-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 88px 230px minmax(0, 1fr);
+      column-gap: 32px;
+    }
+    .tl-year {
+      position: relative;
+      font-size: 15px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.5;
+    }
+    .tl-year::after {
+      content: '';
+      position: absolute;
+      top: .5em;
+      left: var(--rail);
+      width: 9px;
+      height: 9px;
+      margin-left: -4.5px;
+      border: 1.5px solid color-mix(in srgb, var(--accent) 55%, var(--muted));
+      border-radius: 50%;
+      background: var(--bg);
+    }
+    .tl-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      top: calc(.75em + 9px);
+      left: var(--rail);
+      width: 1.5px;
+      height: calc(100% + 44px - 9px);
+      margin-left: -.75px;
+      background: color-mix(in srgb, var(--accent) 35%, var(--line));
+      transform-origin: top;
+    }
+    .tl-item.now .tl-year { color: var(--accent); font-weight: 600; }
+    .tl-item.now .tl-year::after { background: var(--accent); border-color: var(--accent); }
+    .tl-co { display: flex; flex-direction: column; }
+    .timeline.plain .tl-item::before,
+    .timeline.plain .tl-year::after { display: none; }
+
+    .degree {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+    }
 
     .links {
       display: flex;
       flex-wrap: wrap;
-      gap: 40px;
-      font-size: 22px;
+      gap: 48px;
+      font-size: clamp(20px, 1.7vw, 24px);
       font-weight: 500;
+      letter-spacing: -.02em;
     }
+    .links a { display: inline-block; transition: color .2s, text-decoration-color .2s, transform .15s; }
+    .links a:active { transform: scale(.97); }
+    .links .arrow { color: var(--accent); }
 
     .copy {
       all: unset;
@@ -194,16 +328,16 @@
       align-items: baseline;
       gap: 10px;
       min-height: 44px;
-      font-size: 15px;
       color: var(--muted);
-      transition: color .2s;
+      transition: color .2s, transform .15s;
     }
     .copy:hover { color: var(--ink); }
+    .copy:active { transform: scale(.98); }
     .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
     .copy small {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: .14em;
+      letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--accent);
       opacity: 0;
@@ -263,23 +397,40 @@
     }
     .js .dimmed { opacity: var(--dim); }
 
+    /* The timeline rail draws down one role at a time; the current role's dot pulses once. */
+    @keyframes ring {
+      from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+      to   { box-shadow: 0 0 0 10px transparent; }
+    }
+    .js .tl-item::before { transform: scaleY(0); transition: transform .45s ease-in-out; }
+    .js .tl-year::after { transform: scale(0); transition: transform .4s var(--ease); }
+    .js .sec.in .tl-item::before {
+      transform: none;
+      transition-delay: calc(var(--dur) * .45 + var(--n) * 260ms);
+    }
+    .js .sec.in .tl-year::after {
+      transform: none;
+      transition-delay: calc(var(--dur) * .3 + var(--n) * 260ms);
+    }
+    .js .sec.in .tl-item.now .tl-year::after { animation: ring 1.4s ease-out calc(var(--dur) * .3 + 400ms) 2; }
+
     .js .hint {
       position: fixed;
-      inset: auto 0 24px;
+      inset: auto 0 28px;
       display: flex;
       justify-content: center;
       pointer-events: none;
       transition: opacity .35s, visibility .35s;
     }
     .js .hint > span {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: .16em;
+      letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--muted);
       animation: fade-up 1s ease .9s both;
     }
-    .js .hint i { display: inline-block; font-style: normal; animation: nudge 1.8s ease-in-out infinite; }
+    .js .hint i { display: inline-block; font-style: normal; color: var(--accent); animation: nudge 1.8s ease-in-out infinite; }
     .js .hint.gone { opacity: 0; visibility: hidden; }
 
     /* Desktop: stepped navigation. */
@@ -299,42 +450,71 @@
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 0;
     }
+    /* Each dot is a 24px target around an 8px mark; its section name shows on hover. */
     .dots button {
       all: unset;
+      position: relative;
       cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+    }
+    .dots button::before {
+      content: '';
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--line);
       transition: background .3s, transform .3s;
     }
-    .dots button[aria-current="true"] { background: var(--accent); transform: scale(1.3); }
-    .dots button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-
-    /* Phones and touch screens: normal scrolling, sections reveal as they enter. */
-    .native .bar { background: var(--bg); }
-    .native .hero {
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-top: 0;
-      padding-bottom: 6vh;
+    .dots button::after {
+      content: attr(aria-label);
+      position: absolute;
+      right: 30px;
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(4px);
+      transition: opacity .2s, transform .3s var(--ease);
+      pointer-events: none;
     }
+    .dots button:hover::before { background: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+    .dots button:hover::after,
+    .dots button:focus-visible::after { opacity: 1; transform: none; }
+    .dots button[aria-current="true"]::before { background: var(--accent); transform: scale(1.3); }
+    .dots button:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+
+    /*
+     * Phones and touch screens: native scrolling, sections reveal as they enter.
+     * Each swipe settles on the start of the next section, just below the name
+     * bar (html's scroll-padding-top). A section taller than the screen can be
+     * read through freely before the next snap.
+     */
+    .native .bar { background: var(--bg); }
+    .native { scroll-snap-type: y mandatory; }
+    .native .hero,
+    .native .sec { scroll-snap-align: start; scroll-snap-stop: always; }
+    /* Leave room below the last section so its start can reach the top. */
+    .native .sec:last-child { min-height: calc(100svh - 100px); }
 
     @media (max-width: 760px) {
       :root { --gutter: 20px; }
-      .bar { padding-block: 22px; font-size: 18px; }
-      .hero { padding-top: 26vh; }
+      .bar { padding-block: 20px; }
+      .name { font-size: 18px; }
       .sec { margin-top: 14vh; }
-      .co { grid-template-columns: 1fr; gap: 16px; }
-      .co + .co { margin-top: 48px; }
-      .roles { gap: 26px; }
-      .role-top { flex-direction: column; gap: 2px; }
-      .links { flex-direction: column; gap: 14px; font-size: 18px; }
+      .label { margin-bottom: 36px; }
+      .timeline { --rail: 50px; gap: 36px; }
+      .tl-item { grid-template-columns: 64px minmax(0, 1fr); row-gap: 12px; }
+      .tl-item::before { height: calc(100% + 36px - 9px) !important; }
+      .tl-co, .tl-item > .role, .tl-item > .degree { grid-column: 2; }
+      .tl-co:empty { display: none; }
+      .role-top, .degree { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .links { flex-direction: column; gap: 14px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -345,53 +525,70 @@
 </head>
 <body>
 
-<header class="bar">Nikhil Pawar</header>
+<header class="bar">
+  <a class="name" href="#hero" id="home">Nikhil Pawar</a>
+  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Dark theme" aria-pressed="false" title="Switch to dark theme">
+    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M10.46 3.64A8.5 8.5 0 1 0 20.36 13.54A7 7 0 0 1 10.46 3.64z"/>
+    </svg>
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>
+    </svg>
+  </button>
+</header>
 
 <div class="viewport">
   <main class="track" id="track">
     <section class="hero" id="hero">
-      <h1>I design and build distributed backend systems, currently as a software engineer at <em>Amazon Web Services.</em></h1>
+      <h1>I design and build <span class="accent">distributed systems</span> from the first sketch to production, currently as a software engineer at <span class="accent">Amazon Web Services</span></h1>
     </section>
 
     <section class="sec" data-name="Experience" aria-labelledby="experience">
       <h2 class="label" id="experience">Experience</h2>
-
-      <article class="co">
-        <div class="co-id">
-          <h3 class="co-name">Amazon Web Services</h3>
-          <span class="co-where">Seattle</span>
-        </div>
-        <div class="roles">
+      <ol class="timeline">
+        <li class="tl-item now" style="--n: 0">
+          <div class="tl-year">2026</div>
+          <div class="tl-co">
+            <h3 class="co-name">Amazon Web Services</h3>
+            <span class="co-where">Seattle</span>
+          </div>
           <div class="role">
             <div class="role-top">
-              <h4 class="role-title">Software Development Engineer II <span>· Applied AI</span></h4>
+              <h4 class="role-title">Software Development Engineer II <span>Applied AI</span></h4>
               <span class="when now">Apr 2026 – now</span>
             </div>
             <p class="hook">Building the distributed backend and AI agents for a stealth product that helps teams and agents share context and move faster.</p>
           </div>
+        </li>
+        <li class="tl-item" style="--n: 1">
+          <div class="tl-year">2024</div>
+          <div class="tl-co"></div>
           <div class="role">
             <div class="role-top">
-              <h4 class="role-title">Software Development Engineer <span>· End User Computing</span></h4>
+              <h4 class="role-title">Software Development Engineer <span>End User Computing</span></h4>
               <span class="when">Feb 2024 – Apr 2026</span>
             </div>
             <p class="hook">Built backend microservices and Android applications that let users securely stream Amazon WorkSpaces virtual desktops to AWS Thin Client devices.</p>
           </div>
+        </li>
+        <li class="tl-item" style="--n: 2">
+          <div class="tl-year">2023</div>
+          <div class="tl-co"></div>
           <div class="role">
             <div class="role-top">
-              <h4 class="role-title">Software Development Engineer Intern <span>· Amazon Connect</span></h4>
+              <h4 class="role-title">Software Development Engineer Intern <span>Amazon Connect</span></h4>
               <span class="when">May – Aug 2023</span>
             </div>
             <p class="hook">Built core frontend features for Connect Guides, the step-by-step workflows that walk contact-center agents through customer calls.</p>
           </div>
-        </div>
-      </article>
-
-      <article class="co">
-        <div class="co-id">
-          <h3 class="co-name">University of Southern California, Information Sciences Institute</h3>
-          <span class="co-where">Los Angeles</span>
-        </div>
-        <div class="roles">
+        </li>
+        <li class="tl-item" style="--n: 3">
+          <div class="tl-year">2022</div>
+          <div class="tl-co">
+            <h3 class="co-name">University of Southern California, Information Sciences Institute</h3>
+            <span class="co-where">Los Angeles</span>
+          </div>
           <div class="role">
             <div class="role-top">
               <h4 class="role-title">Frontend Developer</h4>
@@ -399,15 +596,13 @@
             </div>
             <p class="hook">Built features for a biomedical research platform that helps medical researchers view and annotate high-resolution images in the browser.</p>
           </div>
-        </div>
-      </article>
-
-      <article class="co">
-        <div class="co-id">
-          <h3 class="co-name">Tata Consultancy Services</h3>
-          <span class="co-where">Mumbai</span>
-        </div>
-        <div class="roles">
+        </li>
+        <li class="tl-item" style="--n: 4">
+          <div class="tl-year">2019</div>
+          <div class="tl-co">
+            <h3 class="co-name">Tata Consultancy Services</h3>
+            <span class="co-where">Mumbai</span>
+          </div>
           <div class="role">
             <div class="role-top">
               <h4 class="role-title">Software Engineer</h4>
@@ -415,27 +610,43 @@
             </div>
             <p class="hook">Built Java backend services and APIs for reliable, scalable data processing in enterprise workflows.</p>
           </div>
-        </div>
-      </article>
+        </li>
+      </ol>
     </section>
 
     <section class="sec" data-name="Education" aria-labelledby="education">
       <h2 class="label" id="education">Education</h2>
-      <div class="degree">
-        <h3 class="hook">Master of Science in Computer Science</h3>
-        <div class="deg-meta">University of Southern California, Los Angeles <span>· 2022 – 2023</span></div>
-      </div>
-      <div class="degree">
-        <h3 class="hook">Bachelor of Engineering in Computer Engineering</h3>
-        <div class="deg-meta">University of Mumbai, Mumbai <span>· 2015 – 2019</span></div>
-      </div>
+      <ol class="timeline plain">
+        <li class="tl-item">
+          <div class="tl-year">2023</div>
+          <div class="tl-co">
+            <h3 class="co-name">University of Southern California</h3>
+            <span class="co-where">Los Angeles</span>
+          </div>
+          <div class="degree">
+            <p class="hook">Master of Science in Computer Science</p>
+            <span class="when">2022 – 2023</span>
+          </div>
+        </li>
+        <li class="tl-item">
+          <div class="tl-year">2019</div>
+          <div class="tl-co">
+            <h3 class="co-name">University of Mumbai</h3>
+            <span class="co-where">Mumbai</span>
+          </div>
+          <div class="degree">
+            <p class="hook">Bachelor of Engineering in Computer Engineering</p>
+            <span class="when">2015 – 2019</span>
+          </div>
+        </li>
+      </ol>
     </section>
 
     <section class="sec" data-name="Contact" aria-labelledby="contact">
       <h2 class="label" id="contact">Contact</h2>
       <div class="links">
-        <a href="mailto:pawarnikhilp@gmail.com?subject=Hello%20Nikhil">Email me ↗</a>
-        <a href="https://www.linkedin.com/in/nikhil-pawar" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="mailto:pawarnikhilp@gmail.com?subject=Hello%20Nikhil">Email me <span class="arrow" aria-hidden="true">↗</span></a>
+        <a href="https://www.linkedin.com/in/nikhil-pawar" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
       <div>
         <button type="button" class="copy" id="copy-email" data-email="pawarnikhilp@gmail.com">
@@ -500,6 +711,46 @@
     heading.prepend(text);
   })(hero.querySelector('h1'));
 
+  /* ---------- Opening line highlight on touch ---------- */
+
+  // Mice use :hover. On touch screens a tap on the line lights it up, and a tap
+  // anywhere else, or scrolling the line out of view, turns it off again.
+  const heading = hero.querySelector('h1');
+  addEventListener('touchstart', e => {
+    heading.classList.toggle('lit', e.target instanceof Node && heading.contains(e.target));
+  }, { passive: true });
+  new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) heading.classList.remove('lit');
+  }).observe(heading);
+
+  /* ---------- Theme ---------- */
+
+  const themeBtn = document.getElementById('theme-toggle');
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+
+  function setTheme(theme, save) {
+    const dark = theme === 'dark';
+    if (dark) root.dataset.theme = 'dark';
+    else delete root.dataset.theme;
+    themeBtn.setAttribute('aria-pressed', String(dark));
+    themeBtn.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    themeColor.content = getComputedStyle(root).getPropertyValue('--bg').trim();
+    if (save) try { localStorage.setItem('theme', theme); } catch {}
+  }
+  setTheme(root.dataset.theme === 'dark' ? 'dark' : 'light', false);
+
+  themeBtn.addEventListener('click', e => {
+    // A mouse click shouldn't leave a focus ring behind; keyboard focus stays.
+    if (e.detail > 0) themeBtn.blur();
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || calm || document.visibilityState !== 'visible') return setTheme(next, true);
+    // The cross-fade is decoration: if the browser skips it, the theme still changes.
+    const fade = document.startViewTransition(() => setTheme(next, true));
+    fade.ready.catch(() => {});
+    fade.finished.catch(() => {});
+  });
+
   /* ---------- Copy email ---------- */
 
   const copyBtn = document.getElementById('copy-email');
@@ -555,7 +806,7 @@
   };
 
   // Progress dots: one for the opening, then one per section.
-  const dots = ['Opening', ...sections.map(s => s.dataset.name)].map((name, i) => {
+  const dots = ['Introduction', ...sections.map(s => s.dataset.name)].map((name, i) => {
     const dot = document.createElement('button');
     dot.type = 'button';
     dot.setAttribute('aria-label', name);
@@ -586,6 +837,7 @@
       s.classList.toggle('dimmed', i < step - 1);
     });
     hero.classList.toggle('dimmed', step > 0);
+    if (step > 0) heading.classList.remove('lit');
     dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === step)));
     hint.classList.toggle('gone', step > 0);
   }
@@ -726,6 +978,13 @@
       track.style.transition = '';
     }
   }
+
+  // The name in the top bar returns to the opening line.
+  document.getElementById('home').addEventListener('click', e => {
+    e.preventDefault();
+    if (isStepped()) go(0);
+    else scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
 
   nativeQuery.addEventListener('change', applyMode);
   addEventListener('resize', () => {
