@@ -108,10 +108,10 @@ const COMMON = /* glsl */ `
     for (int i = 0; i < 8; i++) {
       if (float(i) >= uLineN) break;
       vec4 b = uLines[i];
-      float r = 30.0, cy = (b.y + b.z) * 0.5, hy = (b.z - b.y) * 0.5;
+      float r = 22.0, cy = (b.y + b.z) * 0.5, hy = (b.z - b.y) * 0.5;
       vec2 q = vec2(max(p.x - (b.x - r), 0.0), max(abs(p.y - cy) - (hy - r), 0.0));
       float d = length(q) - r;
-      float w = mix(90.0, 170.0, q.x / max(length(q), 1e-3));
+      float w = mix(56.0, 100.0, q.x / max(length(q), 1e-3));
       t = min(t, d <= 0.0 ? 0.0 : clamp(d / w, 0.0, 1.0));
     }
     return t;
@@ -1311,16 +1311,33 @@ function layoutCamera() {
   // On phones, a narrower lens keeps the database above the text and the
   // balancer and gateway clear below it.
   CAM.fov = 37 + 3 * t;
-  CAM.pos.set(-2 - 2 * t, 16 - 5 * t, 12 + 6 * t);
-  CAM.target.set(0.5 - 8 * t, 0, -4.6 - 9.4 * t);
+  // A level view: the camera looks straight down the aisles, never turned, so
+  // the floor stays square to the screen. To keep the system right of the text
+  // on wide screens the frame slides sideways instead: the aisles meet at `vp`
+  // (a share of the width) and the camera moves over so the gateway sits at `gw`.
+  const vp = 0.5 + 0.16 * t, gw = 0.5 + 0.26 * t;
+  const py = 16 - 5 * t, pz = 12 + 6 * t, tz = -4.6 - 9.4 * t;
+  const shift = (vp - 0.5) * innerWidth;
+  refCam.fov = CAM.fov; refCam.aspect = innerWidth / innerHeight; refCam.near = camera.near; refCam.far = camera.far;
+  refCam.setViewOffset(innerWidth, innerHeight, -shift, 0, innerWidth, innerHeight);
+  // Where the gateway lands is linear in the camera's x, so two probes solve it.
+  const gwAt = (x) => {
+    refCam.position.set(x, py, pz); refCam.lookAt(x, 0, tz); refCam.updateProjectionMatrix(); refCam.updateMatrixWorld();
+    return (_v.set(0, 0, Z_GW).project(refCam).x + 1) / 2;
+  };
+  const a = gwAt(0), b = gwAt(1);
+  const camX = (gw - a) / (b - a);
+  CAM.pos.set(camX, py, pz);
+  CAM.target.set(camX, 0, tz);
   const q = debug.get('cam');
   if (q) { const v = q.split(',').map(Number); CAM.pos.set(v[0], v[1], v[2]); CAM.target.set(v[3], v[4], v[5]); if (v[6]) CAM.fov = v[6]; }
   camera.fov = CAM.fov;
+  camera.setViewOffset(innerWidth, innerHeight, -shift, 0, innerWidth, innerHeight);
   const dist = CAM.pos.distanceTo(CAM.target);
   U.uRefDepth.value = dist;
   // Phones see less of the floor, so the haze starts further back there.
-  U.uFogNear.value = dist * (phone ? 0.8 : 0.55);
-  U.uFogFar.value = dist * (phone ? 3.2 : 2.5);
+  U.uFogNear.value = dist * (phone ? 0.8 : 0.66);
+  U.uFogFar.value = dist * (phone ? 3.2 : 2.8);
   // The screen metric pulses are timed in: the resting view.
   refCam.fov = CAM.fov; refCam.aspect = innerWidth / innerHeight; refCam.near = camera.near; refCam.far = camera.far;
   refCam.position.copy(CAM.pos); refCam.lookAt(CAM.target); refCam.updateProjectionMatrix(); refCam.updateMatrixWorld();
@@ -1352,14 +1369,17 @@ function measureText() {
 }
 const scrimBox = { x1: -1e4, y0: -1e4, y1: -1e4 };
 let scrimLines = [];
-// On phones the text fills most of the screen, so the scrim there is a lighter,
-// tighter band: the scene still reads around the words and edges stay half-visible.
+// A light scrim: enough to lift the words off the scene, while the scene still
+// reads behind and around them and its edges stay half-visible. On phones the
+// text fills most of the screen, so it is one tight band there.
+const DESK_SCRIM = { fill: 0.72, edgeCut: 0.55, soft: 1.5 };
 const PHONE_SCRIM = { fill: 0.6, edgeCut: 0.5, soft: 1.6, pad: 14, feather: 64 };
 let scrimBase = 0.9;
 function applyScrimStrength() {
-  U.uScrimAmt.value = scrimBase * (phone ? PHONE_SCRIM.fill : 1);
-  U.uEdgeCut.value = phone ? PHONE_SCRIM.edgeCut : 1;
-  U.uSoftMax.value = phone ? PHONE_SCRIM.soft : 4;
+  const k = phone ? PHONE_SCRIM : DESK_SCRIM;
+  U.uScrimAmt.value = scrimBase * k.fill;
+  U.uEdgeCut.value = k.edgeCut;
+  U.uSoftMax.value = k.soft;
 }
 function placeScrim() {
   applyScrimStrength();
@@ -1369,7 +1389,7 @@ function placeScrim() {
   if (phone) Object.assign(scrimBox, { x1: 1e5, y0: y0 - PHONE_SCRIM.pad, y1: y1 + PHONE_SCRIM.pad });
   else Object.assign(scrimBox, { x1: x1 + 48, y0: y0 - 52, y1: y1 + 52 });
   U.uScrim.value.set(scrimBox.x1, scrimBox.y0, scrimBox.y1, phone ? 1 : 0);
-  scrimLines = textLines.slice(0, 8).map((l, i, all) => ({ x1: b.left + l.x1 + 44, y0: b.top + l.y0 - (i === 0 ? 40 : 16), y1: b.top + l.y1 + (i === all.length - 1 ? 40 : 16) }));
+  scrimLines = textLines.slice(0, 8).map((l, i, all) => ({ x1: b.left + l.x1 + 28, y0: b.top + l.y0 - (i === 0 ? 22 : 10), y1: b.top + l.y1 + (i === all.length - 1 ? 22 : 10) }));
   scrimLines.forEach((l, i) => U.uLines.value[i].set(l.x1, l.y0, l.y1, 0));
   U.uLineN.value = scrimLines.length;
 }
@@ -1378,10 +1398,10 @@ function scrimAt(x, y) {
   if (phone) return clamp(Math.max(scrimBox.y0 - y, y - scrimBox.y1) / PHONE_SCRIM.feather, 0, 1);
   let t = 1;
   for (const l of scrimLines) {
-    const r = 30, cy = (l.y0 + l.y1) / 2, hy = (l.y1 - l.y0) / 2;
+    const r = 22, cy = (l.y0 + l.y1) / 2, hy = (l.y1 - l.y0) / 2;
     const qx = Math.max(x - (l.x1 - r), 0), qy = Math.max(Math.abs(y - cy) - (hy - r), 0);
     const d = Math.hypot(qx, qy) - r;
-    t = Math.min(t, d <= 0 ? 0 : clamp(d / (90 + 80 * (qx / Math.max(Math.hypot(qx, qy), 1e-3))), 0, 1));
+    t = Math.min(t, d <= 0 ? 0 : clamp(d / (56 + 44 * (qx / Math.max(Math.hypot(qx, qy), 1e-3))), 0, 1));
   }
   return t;
 }
@@ -1490,10 +1510,11 @@ function adapt(dt) {
 const right = new THREE.Vector3(), lookAt = new THREE.Vector3();
 function placeCamera() {
   // Pointer parallax plus a slow drift, as if the drone were holding position.
+  // It slides rather than turns, so the floor stays level.
   const dx = input.ex * 1.1 + Math.sin(clock * 0.05) * 0.6, dy = input.ey * 0.45 + Math.sin(clock * 0.037 + 1) * 0.2;
   right.subVectors(CAM.target, CAM.pos).cross(camera.up).normalize();
   camera.position.copy(CAM.pos).addScaledVector(right, dx).add(tmp.set(0, dy, 0));
-  lookAt.copy(CAM.target).addScaledVector(right, dx * 0.25);
+  lookAt.copy(CAM.target).addScaledVector(right, dx);
   camera.lookAt(lookAt);
   camera.updateMatrixWorld();
 }

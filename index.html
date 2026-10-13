@@ -22,11 +22,15 @@
   <meta name="twitter:image" content="https://nikhilpawar.dev/og-card.png">
 
   <script>
-    // Before first paint: mark JS as available and apply a saved dark theme.
+    // Before first paint: mark JS as available and apply the theme: the visitor's
+    // own choice if they made one with the toggle, otherwise the system setting.
     (function () {
       var root = document.documentElement;
       root.classList.replace('no-js', 'js');
-      try { if (localStorage.getItem('theme') === 'dark') root.dataset.theme = 'dark'; } catch (e) {}
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) {}
+      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      if (dark) root.dataset.theme = 'dark';
     })();
   </script>
 
@@ -232,7 +236,7 @@
       font-size: 15px;
     }
     .role-title { margin: 0; font-size: inherit; font-weight: 600; }
-    .role-title span { font-weight: 400; color: var(--muted); }
+    .role-title span { font-weight: 400; color: var(--muted); white-space: nowrap; }
 
     .when {
       font-size: 15px;
@@ -601,7 +605,7 @@
           <div class="role">
             <div class="role-top">
               <h4 class="role-title">Software Development Engineer Intern <span>Amazon Connect</span></h4>
-              <span class="when">May – Aug 2023</span>
+              <span class="when">May 2023 – Aug 2023</span>
             </div>
             <p class="hook">Built core frontend features for Connect Guides, the step-by-step workflows that walk contact-center agents through customer calls.</p>
           </div>
@@ -614,7 +618,7 @@
           </div>
           <div class="role">
             <div class="role-top">
-              <h4 class="role-title">Frontend Developer</h4>
+              <h4 class="role-title">Frontend Developer <span>Part-time, while a student</span></h4>
               <span class="when">May 2022 – May 2023</span>
             </div>
             <p class="hook">Built features for a biomedical research platform that helps medical researchers view and annotate high-resolution images in the browser.</p>
@@ -761,6 +765,13 @@
     if (save) try { localStorage.setItem('theme', theme); } catch {}
   }
   setTheme(root.dataset.theme === 'dark' ? 'dark' : 'light', false);
+
+  // Until the visitor picks a theme with the toggle, follow the system as it changes.
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    let saved = null;
+    try { saved = localStorage.getItem('theme'); } catch {}
+    if (!saved) setTheme(e.matches ? 'dark' : 'light', false);
+  });
 
   themeBtn.addEventListener('click', e => {
     // A mouse click shouldn't leave a focus ring behind; keyboard focus stays.
