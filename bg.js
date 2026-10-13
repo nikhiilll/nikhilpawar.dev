@@ -13,7 +13,6 @@ const root = document.documentElement;
 const canvas = document.getElementById('bg3d');
 const hero = document.getElementById('hero');
 const heading = hero.querySelector('h1');
-const hintEl = document.getElementById('sys-hint');
 const still = matchMedia('(prefers-reduced-motion: reduce)');
 const debug = new URLSearchParams(location.search);
 const S = ['1', '2', '3'].includes(debug.get('s')) ? Number(debug.get('s')) : 1;
@@ -61,7 +60,7 @@ const U = {
   uBg: { value: new THREE.Color() }, uInk: { value: new THREE.Color() }, uPlum: { value: new THREE.Color() }, uEdgeCol: { value: new THREE.Color() },
   uTop: { value: new THREE.Color() }, uFront: { value: new THREE.Color() }, uSide: { value: new THREE.Color() }, uShadow: { value: new THREE.Color() },
   uEdge: { value: 0.3 }, uGroove: { value: 0.16 }, uTray: { value: 0.2 }, uShadowA: { value: 0.15 }, uLed: { value: 0.4 }, uResp: { value: 0.5 },
-  uScrimAmt: { value: 0.9 }, uGlow: { value: 0 },
+  uScrimAmt: { value: 0.9 }, uEdgeCut: { value: 1 }, uSoftMax: { value: 4 }, uGlow: { value: 0 },
   uFogNear: { value: 18 }, uFogFar: { value: 80 },
   uTime: { value: 0 }, uDpr: { value: 1 }, uRes: { value: new THREE.Vector2(1, 1) }, uPxScale: { value: 1000 }, uRefDepth: { value: 30 },
   // The text scrim in CSS px: one box per line (right edge, top, bottom), merged,
@@ -79,7 +78,9 @@ function readTheme() {
   const p = PALETTES[dark ? 'dark' : 'light'];
   for (const k of ['bg', 'ink', 'plum', 'edgeCol', 'top', 'front', 'side', 'shadow']) U['u' + k[0].toUpperCase() + k.slice(1)].value.set(p[k]);
   U.uEdge.value = p.edge; U.uGroove.value = p.groove; U.uTray.value = p.tray; U.uShadowA.value = p.shadowA;
-  U.uLed.value = p.led; U.uResp.value = p.resp; U.uScrimAmt.value = p.scrim; U.uGlow.value = p.glow;
+  U.uLed.value = p.led; U.uResp.value = p.resp; U.uGlow.value = p.glow;
+  scrimBase = p.scrim;
+  applyScrimStrength();
   // In the dark, plum light adds to what is under it, like a glow.
   for (const m of glowMats) { m.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending; m.needsUpdate = true; }
   renderer.setClearColor(U.uBg.value, 1);
@@ -93,7 +94,7 @@ function readTheme() {
 // late, and edges soften as they fade.
 const COMMON = /* glsl */ `
   uniform vec3 uBg, uInk, uPlum;
-  uniform float uFogNear, uFogFar, uTime, uDpr, uScrimAmt;
+  uniform float uFogNear, uFogFar, uTime, uDpr, uScrimAmt, uEdgeCut, uSoftMax;
   uniform vec4 uScrim, uLines[8];
   uniform float uLineN;
   uniform vec2 uRes;
@@ -101,7 +102,7 @@ const COMMON = /* glsl */ `
     vec2 p = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y) / uDpr;
     if (uScrim.w > 0.5) {
       float d = max(uScrim.y - p.y, p.y - uScrim.z);
-      return clamp(d / 110.0, 0.0, 1.0);
+      return clamp(d / 64.0, 0.0, 1.0);
     }
     float t = 1.0;
     for (int i = 0; i < 8; i++) {
@@ -116,8 +117,8 @@ const COMMON = /* glsl */ `
     return t;
   }
   float scrimFill(float t) { return uScrimAmt * (1.0 - smoothstep(0.0, 1.0, t)); }
-  float scrimEdge(float t) { return 1.0 - smoothstep(0.0, 0.45, t); }
-  float scrimSoft(float t) { return mix(4.0, 1.0, smoothstep(0.0, 1.0, t)); }
+  float scrimEdge(float t) { return uEdgeCut * (1.0 - smoothstep(0.0, 0.45, t)); }
+  float scrimSoft(float t) { return mix(uSoftMax, 1.0, smoothstep(0.0, 1.0, t)); }
   float fogOf(float depth) { return smoothstep(uFogNear, uFogFar, depth); }
   float aaLine(float px, float w, float soft) { return 1.0 - smoothstep(w - 0.5 * soft, w + 0.5 * soft, px); }
   float hash(float n) { return fract(sin(n) * 43758.5453123); }
@@ -1317,8 +1318,9 @@ function layoutCamera() {
   camera.fov = CAM.fov;
   const dist = CAM.pos.distanceTo(CAM.target);
   U.uRefDepth.value = dist;
-  U.uFogNear.value = dist * 0.55;
-  U.uFogFar.value = dist * 2.5;
+  // Phones see less of the floor, so the haze starts further back there.
+  U.uFogNear.value = dist * (phone ? 0.8 : 0.55);
+  U.uFogFar.value = dist * (phone ? 3.2 : 2.5);
   // The screen metric pulses are timed in: the resting view.
   refCam.fov = CAM.fov; refCam.aspect = innerWidth / innerHeight; refCam.near = camera.near; refCam.far = camera.far;
   refCam.position.copy(CAM.pos); refCam.lookAt(CAM.target); refCam.updateProjectionMatrix(); refCam.updateMatrixWorld();
@@ -1350,21 +1352,30 @@ function measureText() {
 }
 const scrimBox = { x1: -1e4, y0: -1e4, y1: -1e4 };
 let scrimLines = [];
+// On phones the text fills most of the screen, so the scrim there is a lighter,
+// tighter band: the scene still reads around the words and edges stay half-visible.
+const PHONE_SCRIM = { fill: 0.6, edgeCut: 0.5, soft: 1.6, pad: 14, feather: 64 };
+let scrimBase = 0.9;
+function applyScrimStrength() {
+  U.uScrimAmt.value = scrimBase * (phone ? PHONE_SCRIM.fill : 1);
+  U.uEdgeCut.value = phone ? PHONE_SCRIM.edgeCut : 1;
+  U.uSoftMax.value = phone ? PHONE_SCRIM.soft : 4;
+}
 function placeScrim() {
+  applyScrimStrength();
   if (!textLines.length) return;
   const b = heading.getBoundingClientRect();
   const x1 = b.left + Math.max(...textLines.map((l) => l.x1)), y0 = b.top + Math.min(...textLines.map((l) => l.y0)), y1 = b.top + Math.max(...textLines.map((l) => l.y1));
-  if (phone) Object.assign(scrimBox, { x1: 1e5, y0: y0 - 40, y1: y1 + 40 });
+  if (phone) Object.assign(scrimBox, { x1: 1e5, y0: y0 - PHONE_SCRIM.pad, y1: y1 + PHONE_SCRIM.pad });
   else Object.assign(scrimBox, { x1: x1 + 48, y0: y0 - 52, y1: y1 + 52 });
   U.uScrim.value.set(scrimBox.x1, scrimBox.y0, scrimBox.y1, phone ? 1 : 0);
   scrimLines = textLines.slice(0, 8).map((l, i, all) => ({ x1: b.left + l.x1 + 44, y0: b.top + l.y0 - (i === 0 ? 40 : 16), y1: b.top + l.y1 + (i === all.length - 1 ? 40 : 16) }));
   scrimLines.forEach((l, i) => U.uLines.value[i].set(l.x1, l.y0, l.y1, 0));
   U.uLineN.value = scrimLines.length;
-  if (hintEl) { hintEl.style.top = phone ? `${Math.round(y1 + 20)}px` : ''; hintEl.style.bottom = phone ? 'auto' : ''; }
 }
 // The same shape in script: how far into the scrim a point on screen is (0 = core).
 function scrimAt(x, y) {
-  if (phone) return clamp(Math.max(scrimBox.y0 - y, y - scrimBox.y1) / 110, 0, 1);
+  if (phone) return clamp(Math.max(scrimBox.y0 - y, y - scrimBox.y1) / PHONE_SCRIM.feather, 0, 1);
   let t = 1;
   for (const l of scrimLines) {
     const r = 30, cy = (l.y0 + l.y1) / 2, hy = (l.y1 - l.y0) / 2;
@@ -1411,7 +1422,7 @@ function pickAt(x, y) {
 }
 const stopOf = (c) => stops.filter((s) => s.comp === c).sort((a, b) => Math.abs(a.m) - Math.abs(b.m))[0];
 
-let hovered = null, interacted = false, solo = false;
+let hovered = null, solo = false;
 function interact(c, x, y) {
   const at = (n, gap, fn) => { for (let k = 0; k < n; k++) after(k * gap, fn); };
   switch (c?.kind) {
@@ -1452,12 +1463,6 @@ function interact(c, x, y) {
     }
   }
 }
-function noteInteraction() {
-  if (interacted) return;
-  interacted = true;
-  hintEl?.classList.remove('on');
-  try { localStorage.setItem('fleet-hint-seen', '1'); } catch (e) {}
-}
 const input = { x: 0, y: 0, ex: 0, ey: 0 };
 addEventListener('pointermove', (e) => {
   input.x = (e.clientX / innerWidth) * 2 - 1;
@@ -1470,7 +1475,6 @@ addEventListener('click', (e) => {
   if (heroVis < 0.6 || still.matches || e.target.closest('a, button, input, nav')) return;
   if (scrimAt(e.clientX, e.clientY) < 0.35) return;     // the text is not part of the system
   interact(pickAt(e.clientX, e.clientY), e.clientX, e.clientY);
-  noteInteraction();
 });
 
 /* ---------- Loop ---------- */
@@ -1500,13 +1504,6 @@ function render() {
   renderer.render(scene, camera);
 }
 
-let hintSeen = false;
-try { hintSeen = localStorage.getItem('fleet-hint-seen') === '1'; } catch (e) {}
-if (hintEl) {
-  hintEl.textContent = matchMedia('(hover: none)').matches ? 'This system is live. Tap any part of it.' : 'This system is live. Click any part of it.';
-  if (!hintSeen && !still.matches) setTimeout(() => { if (!interacted) hintEl.classList.add('on'); }, 2600);
-}
-
 let heroVis = 1, last = 0, fade = 0, rec = null;
 const fpsLog = [];
 const proj = (v) => { v.project(camera); return [+((v.x + 1) * 0.5 * innerWidth).toFixed(2), +((1 - v.y) * 0.5 * innerHeight).toFixed(2)]; };
@@ -1520,7 +1517,6 @@ function frame(now) {
   fade += (1 - fade) * ease(still.matches ? 60 : 1.4, dt);
   const shown = heroVis * heroVis;
   canvas.style.opacity = (shown * fade).toFixed(3);
-  if (hintEl) hintEl.style.opacity = shown < 0.9 ? '0' : '';
   if (shown < 0.002) { last = 0; if (hovered) { hovered = null; document.body.style.cursor = ''; } return; }
   if (still.matches) { if (dirty) { placeCamera(); render(); dirty = false; } return; }
   input.ex += (input.x - input.ex) * ease(1.5, dt);
