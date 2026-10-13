@@ -500,7 +500,16 @@
      * bar (html's scroll-padding-top). A section taller than the screen can be
      * read through freely before the next snap.
      */
+    /* Solid behind the name, so scrolled text never shows through it, then a soft fade into the scene below. */
     .native .bar { background: var(--bg); }
+    .native .bar::after {
+      content: '';
+      position: absolute;
+      inset: 100% 0 auto;
+      height: 48px;
+      background: linear-gradient(var(--bg), transparent);
+      pointer-events: none;
+    }
     .native { scroll-snap-type: y mandatory; }
     .native .hero,
     .native .sec { scroll-snap-align: start; scroll-snap-stop: always; }
@@ -526,9 +535,26 @@
       :root { --dur: 1ms; }
       *, *::before, *::after { animation: none !important; }
     }
+
+    /* ---------- A live distributed system behind the opening line (bg.js) ---------- */
+    /* Full bleed, no mask: the scene keeps its own contrast low behind the text. */
+    #bg3d {
+      position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0;
+      pointer-events: none; opacity: 0;
+    }
+    .viewport { position: relative; z-index: 1; }
+    /* A quiet line that says the system can be touched; it fades after the first interaction. */
+    .sys-hint {
+      position: fixed; z-index: 6; left: var(--gutter); bottom: 30px; margin: 0;
+      font-size: 12.5px; font-weight: 500; letter-spacing: .01em; color: var(--muted);
+      pointer-events: none; opacity: 0; transition: opacity .9s ease;
+    }
+    .sys-hint.on { opacity: .9; }
   </style>
 </head>
 <body>
+<canvas id="bg3d" aria-hidden="true"></canvas>
+<p class="sys-hint" id="sys-hint" aria-hidden="true"></p>
 
 <header class="bar">
   <a class="name" href="#hero" id="home">Nikhil Pawar</a>
@@ -1016,5 +1042,7 @@
   );
 })();
 </script>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
+<script type="module" src="bg.js"></script>
 </body>
 </html>
