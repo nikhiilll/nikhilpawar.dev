@@ -13,12 +13,12 @@
 <meta property="og:url" content="https://nikhilpawar.dev/">
 <meta property="og:title" content="Nikhil Pawar">
 <meta property="og:description" content="I like building distributed systems and microservices, from the first design to production. Right now I’m building at Amazon Web Services.">
-<meta property="og:image" content="https://nikhilpawar.dev/preview-card.png">
+<meta property="og:image" content="https://nikhilpawar.dev/link-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="Hi, I’m Nikhil. I like building distributed systems and microservices, from the first design to production.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://nikhilpawar.dev/preview-card.png">
+<meta name="twitter:image" content="https://nikhilpawar.dev/link-card.png">
 <script>
   // Before first paint: the visitor's saved choice, otherwise the system setting.
   (function () {
@@ -55,12 +55,9 @@ a{color:inherit}
 .intro{margin-top:112px}
 .intro p{margin:0;font-size:28px;line-height:1.45;font-weight:450;letter-spacing:-0.017em}
 .intro p+p{margin-top:22px}
-.intro .quiet{color:var(--muted)}
 .wave{display:inline-block;margin-right:.08em;transform-origin:70% 75%;animation:wave 1.6s ease-in-out .5s 1}
 .hi:hover .wave{animation:wave 1.6s ease-in-out 1}
 @keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(14deg)}20%{transform:rotate(-8deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
-.lit{background:linear-gradient(var(--tint),var(--tint)) left center/0% 100% no-repeat;border-radius:2px;transition:background-size .55s var(--ease)}
-.intro:hover .lit,.intro.on .lit{background-size:100% 100%}
 .sec{margin-top:104px}
 .sec h2{margin:0 0 10px;font-size:16px;font-weight:500;color:var(--ink)}
 .sec+.sec{margin-top:64px}
@@ -100,7 +97,7 @@ a{color:inherit}
   .v-b .job{gap:12px}
   .sec{margin-top:72px}
 }
-@media (prefers-reduced-motion:reduce){.wave{animation:none!important}.lit,.toggle svg{transition:none}}
+@media (prefers-reduced-motion:reduce){.wave{animation:none!important}.toggle svg{transition:none}}
 
 </style>
 </head>
@@ -116,7 +113,7 @@ a{color:inherit}
 </nav>
 </header>
 <main id="top" class="v-c">
-<section class="intro" id="intro"><p class="hi"><span class="wave" role="img" aria-label="waving hand">👋</span> Hi, I’m Nikhil.</p><p>I like building <span class="lit">distributed systems</span> and microservices, taking them from the first design to production and making sure they hold up at scale.</p><p class="quiet">Right now I’m building at <span class="lit">Amazon Web Services</span>.</p></section>
+<section class="intro" id="intro"><p class="hi"><span class="wave" role="img" aria-label="waving hand">👋</span> Hi, I’m Nikhil.</p><p>I like building distributed systems and microservices, taking them from the first design to production and making sure they hold up at scale.</p><p>Right now I’m building at Amazon Web Services.</p></section>
 <section class="sec" aria-labelledby="work"><h2 id="work">Work</h2><ul class="list"><li class="row"><div class="rail"><div class="yr">2026 – now</div><div class="city">Seattle</div></div><div><div class="role">Software Development Engineer II <span class=team><span class=sep>· </span>Applied AI</span></div><div class="org">Amazon Web Services</div><p class="line">Agentic engineering for a stealth product: the distributed backend, the AI agents, and the context they share, so teams and agents can move faster.</p></div></li><li class="row"><div class="rail"><div class="yr">2024 – 2026</div><div class="city">Seattle</div></div><div><div class="role">Software Development Engineer <span class=team><span class=sep>· </span>End User Computing</span></div><div class="org">Amazon Web Services</div><p class="line">Backend microservices and on-device Android apps for AWS Thin Client, so people can securely stream Amazon WorkSpaces virtual desktops.</p></div></li><li class="row"><div class="rail"><div class="yr">2023</div><div class="city">Seattle</div></div><div><div class="role">Software Development Engineer Intern <span class=team><span class=sep>· </span>Amazon Connect</span></div><div class="org">Amazon Web Services</div><p class="line">Core frontend features for Connect Guides, the step-by-step workflows that walk contact-center agents through customer calls.</p></div></li><li class="row"><div class="rail"><div class="yr">2022 – 2023</div><div class="city">Los Angeles</div></div><div><div class="role">Frontend Developer <span class=team><span class=sep>· </span>Part-time</span></div><div class="org">USC Information Sciences Institute</div><p class="line">Features for a biomedical research platform where researchers view and annotate high-resolution images in the browser.</p></div></li><li class="row"><div class="rail"><div class="yr">2019 – 2021</div><div class="city">Mumbai</div></div><div><div class="role">Software Engineer</div><div class="org">Tata Consultancy Services</div><p class="line">Java backend services and APIs for reliable, scalable data processing in enterprise workflows.</p></div></li></ul></section>
 <section class="sec" aria-labelledby="edu"><h2 id="edu">Education</h2><ul class="list"><li class="row"><div class="rail"><div class="yr">2022 – 2023</div></div><div><div class="role">M.S. Computer Science</div><div class="org">University of Southern California</div></div></li><li class="row"><div class="rail"><div class="yr">2015 – 2019</div></div><div><div class="role">B.E. Computer Engineering</div><div class="org">University of Mumbai</div></div></li></ul></section>
 <section class="sec read" id="reading" aria-labelledby="reading-h" hidden><h2 id="reading-h">Reading</h2><ul class="list"></ul></section>
@@ -154,10 +151,6 @@ a{color:inherit}
     const fade = document.startViewTransition(() => setTheme(next, true));
     fade.ready.catch(() => {});
   });
-
-  /* ---------- Highlight: hover on desktop, tap on touch ---------- */
-  const intro = document.getElementById('intro');
-  intro.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') intro.classList.toggle('on'); });
 
   /* ---------- Reading shelf: hidden while the list is empty ---------- */
   let shelf = [];
