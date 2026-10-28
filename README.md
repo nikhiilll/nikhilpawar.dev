@@ -9,7 +9,7 @@ My personal site. One static page, no build step: edit the files and push.
 - `favicon.png`, `apple-touch-icon.png`: browser tab and home-screen icons (black "NP" in Geist on the page background).
 - `share-card.png`: the 1200 × 627 preview card shown when the link is shared (LinkedIn, Slack, iMessage, X). LinkedIn caches images by URL, so give a new card a new file name.
 - `robots.txt`, `sitemap.xml`: for search engines. Bump `<lastmod>` in the sitemap and `dateModified` in `index.html` when the content changes.
-- `_headers`: security headers for Cloudflare Pages, including a Content Security Policy that only allows files from this site. Keep scripts and styles in `site.js` and `site.css`: inline `<script>` code or `style="…"` attributes will be blocked. (The JSON blocks in `index.html` are data, not code, so they're fine.)
+- `_headers`: security headers for Cloudflare Pages, including a Content Security Policy that only allows files from this site (plus the Cloudflare Web Analytics beacon, which Cloudflare adds to the page). Keep scripts and styles in `site.js` and `site.css`: inline `<script>` code or `style="…"` attributes will be blocked. (The JSON blocks in `index.html` are data, not code, so they're fine.)
 
 **Search:** the `application/ld+json` block in `index.html`'s head tells search engines who the page is about (name, role, employer, schools, LinkedIn). Keep it in step with the page when the job changes.
 
