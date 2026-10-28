@@ -1,1051 +1,180 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nikhil Pawar</title>
-  <meta name="description" content="Nikhil Pawar designs and builds distributed systems from the first sketch to production, currently as a software engineer at Amazon Web Services.">
-  <link rel="canonical" href="https://nikhilpawar.dev/">
-  <meta name="theme-color" content="#ebeae6">
-  <link rel="icon" href="favicon.png" type="image/png" sizes="128x128">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nikhil Pawar</title>
+<meta name="description" content="Nikhil Pawar builds distributed systems and microservices, from the first design to production. Right now at Amazon Web Services.">
+<link rel="canonical" href="https://nikhilpawar.dev/">
+<meta name="theme-color" content="#f5f2eb">
+<link rel="icon" href="favicon.png" type="image/png" sizes="128x128">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nikhilpawar.dev/">
+<meta property="og:title" content="Nikhil Pawar">
+<meta property="og:description" content="I like building distributed systems and microservices, from the first design to production. Right now I’m building at Amazon Web Services.">
+<meta property="og:image" content="https://nikhilpawar.dev/preview-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="Hi, I’m Nikhil. I like building distributed systems and microservices, from the first design to production.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nikhilpawar.dev/preview-card.png">
+<script>
+  // Before first paint: the visitor's saved choice, otherwise the system setting.
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    if (saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark';
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&display=swap">
+<style>
+body{margin:0}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.4s}
 
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nikhilpawar.dev/">
-  <meta property="og:title" content="Nikhil Pawar">
-  <meta property="og:description" content="I design and build distributed systems from the first sketch to production, currently as a software engineer at Amazon Web Services">
-  <meta property="og:image" content="https://nikhilpawar.dev/og-card.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="627">
-  <meta property="og:image:alt" content="nikhilpawar.dev: Software engineer, distributed systems">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://nikhilpawar.dev/og-card.png">
+.page{--bg:#f5f2eb;--ink:#1d1b17;--org:#45413a;--muted:#8f887a;--soft:#6b665b;--rule:#e8e3d8;--under:#cfc8b8;--accent:#9b4767;--tint:rgba(155,71,103,.16);--ease:cubic-bezier(.7,0,.2,1)}
+[data-theme="dark"] .page,.page[data-theme="dark"]{--bg:#161513;--ink:#ecebe6;--org:#d2cdc3;--muted:#8a857a;--soft:#a6a196;--rule:#2a2825;--under:#45413b;--accent:#e3a9bf;--tint:rgba(227,169,191,.18)}
+.page{background:var(--bg);color:var(--ink);font-family:'Geist',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+.page ::selection{background:var(--tint)}
+.wrap{max-width:680px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+.bar{display:flex;align-items:center;justify-content:space-between;height:88px;font-size:14px}
+.bar .name{text-decoration:none;font-weight:500}
+.bar nav{display:flex;align-items:center;gap:22px}
+.bar nav a{text-decoration:none;color:var(--muted);transition:color .2s}
+.bar nav a:hover{color:var(--ink)}
+.toggle{all:unset;cursor:pointer;width:32px;height:32px;margin-right:-8px;display:grid;place-items:center;border-radius:50%;color:var(--muted);transition:color .2s}
+.toggle:hover{color:var(--ink)}
+.toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toggle svg{grid-area:1/1;width:15px;height:15px;transition:opacity .3s,transform .5s var(--ease)}
+.toggle .sun{opacity:0;transform:rotate(-90deg) scale(.6)}
+[data-theme="dark"] .toggle .moon{opacity:0;transform:rotate(90deg) scale(.6)}
+[data-theme="dark"] .toggle .sun{opacity:1;transform:none}
+.intro{margin-top:112px}
+.intro p{margin:0;font-size:28px;line-height:1.45;font-weight:450;letter-spacing:-0.017em}
+.intro p+p{margin-top:22px}
+.intro .quiet{color:var(--muted)}
+.wave{display:inline-block;margin-right:.08em;transform-origin:70% 75%;animation:wave 1.6s ease-in-out .5s 1}
+.hi:hover .wave{animation:wave 1.6s ease-in-out 1}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(14deg)}20%{transform:rotate(-8deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
+.lit{background:linear-gradient(var(--tint),var(--tint)) left center/0% 100% no-repeat;border-radius:2px;transition:background-size .55s var(--ease)}
+.intro:hover .lit,.intro.on .lit{background-size:100% 100%}
+.sec{margin-top:104px}
+.sec h2{margin:0 0 10px;font-size:16px;font-weight:500;color:var(--ink)}
+.sec+.sec{margin-top:64px}
+.list,.jobs{list-style:none;margin:0;padding:0}
+.yr{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.city{color:var(--muted);opacity:.8;font-size:14px}
+.now{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:2px}
+.role{font-size:16px;font-weight:500}
+.org,.team{color:var(--muted)}
+.line{margin:6px 0 0;color:var(--soft);max-width:520px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+/* A */
+.v-a .co{padding:20px 0 6px;border-top:1px solid var(--rule)}
+.v-a .co-name{font-size:16px;font-weight:500}
+.v-a .jobs{margin:14px 0 0 3px;padding-left:20px;border-left:1px solid var(--rule)}
+.v-a .job+.job{margin-top:20px}
+.v-a .job .role{font-weight:400}
+.v-a .co>.team{margin-top:2px}
+/* B */
+.v-b .job{display:grid;grid-template-columns:1fr auto;gap:24px;padding:18px 0}
+.v-b .job:first-child{padding-top:6px}
+.v-b .rail{text-align:right}
+/* C */
+.v-c .row{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--rule)}
+.v-c .team{font-weight:400;white-space:nowrap}
+.v-c .org{color:var(--org)}
+/* reading shelf, when it has links */
+.read .row{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--rule)}
+.read a{text-decoration:underline;text-decoration-color:var(--under);text-underline-offset:.2em}.read a:hover{text-decoration-color:var(--accent)}
+.foot{margin:96px 0 0;padding-bottom:72px;font-size:13px;color:var(--muted)}
+@media (max-width:640px){
+  .bar{height:72px}.bar nav{gap:16px}
+  .intro{margin-top:56px}.intro p{font-size:23px}
+  .v-c .row,.read .row{grid-template-columns:1fr;gap:4px}
+  .v-c .rail{display:flex;gap:10px;align-items:baseline}
+  .v-c .team{display:block}.v-c .sep{display:none}
+  .v-b .job{gap:12px}
+  .sec{margin-top:72px}
+}
+@media (prefers-reduced-motion:reduce){.wave{animation:none!important}.lit,.toggle svg{transition:none}}
 
-  <script>
-    // Before first paint: mark JS as available and apply the theme: the visitor's
-    // own choice if they made one with the toggle, otherwise the system setting.
-    (function () {
-      var root = document.documentElement;
-      root.classList.replace('no-js', 'js');
-      var saved = null;
-      try { saved = localStorage.getItem('theme'); } catch (e) {}
-      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-      if (dark) root.dataset.theme = 'dark';
-    })();
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&display=swap">
-
-  <style>
-    /*
-     * Layout: on desktop the page is a fixed viewport and the content track
-     * moves beneath it one section at a time. Phones and touch screens scroll
-     * normally (the `.native` class). Without JavaScript everything is visible.
-     * Plum is the only colour, used for highlights. Light by default; a
-     * toggle in the top bar switches to dark and remembers the choice.
-     */
-    :root {
-      color-scheme: light;
-      --bg: #ebeae6;
-      --ink: #141414;
-      --muted: #66665f;
-      --line: #d2d1cc;
-      --accent: #9b4767;
-      --tint: color-mix(in srgb, var(--accent) 22%, transparent);
-
-      --sans: 'Hanken Grotesk', system-ui, sans-serif;
-
-      --dur: 1000ms;
-      --ease: cubic-bezier(.16, 1, .3, 1);
-      --rise: 70px;
-      --dim: .35;
-      --gutter: clamp(20px, 13vw, 200px);
-    }
-
-    :root[data-theme="dark"] {
-      color-scheme: dark;
-      --bg: #151515;
-      --ink: #ededea;
-      --muted: #9a9a95;
-      --line: #2e2e2c;
-      --accent: #d08aa5;
-      --tint: color-mix(in srgb, var(--accent) 26%, transparent);
-    }
-
-    /* Switching theme cross-fades the whole page (where supported). */
-    ::view-transition-old(root),
-    ::view-transition-new(root) { animation-duration: .35s; }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html, body { margin: 0; }
-
-    /* Keep focused elements clear of the fixed name bar when the page scrolls. */
-    html { scroll-padding-top: 100px; }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    ::selection { background: var(--accent); color: var(--bg); }
-
-    a {
-      color: inherit;
-      text-decoration: underline;
-      text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
-      text-decoration-thickness: 1.5px;
-      text-underline-offset: .22em;
-      transition: color .2s, text-decoration-color .2s;
-    }
-    a:hover { color: var(--accent); text-decoration-color: var(--accent); }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-
-    .accent { color: var(--accent); }
-
-    /*
-     * Pointing at (or tapping) the opening line sweeps a soft plum highlight
-     * across its plum phrases, left to right, both at once. Leaving pulls the
-     * highlights back from the right.
-     */
-    .hero .accent {
-      white-space: nowrap; /* keep each highlight in one piece */
-      margin: 0 -.12em;
-      padding: 0 .12em;
-      background: linear-gradient(var(--tint), var(--tint)) left center / 0% 100% no-repeat;
-      transition: background-size .55s cubic-bezier(.7, 0, .2, 1);
-    }
-    .hero h1.lit .accent { background-size: 100% 100%; }
-    @media (hover: hover) {
-      .hero h1:hover .accent { background-size: 100% 100%; }
-    }
-
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      border: 0;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      white-space: nowrap;
-    }
-
-    /* ---------- Top bar ---------- */
-
-    .bar {
-      position: fixed;
-      z-index: 5;
-      inset: 0 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 28px var(--gutter);
-      background: linear-gradient(var(--bg) 60%, transparent);
-    }
-    .name {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -.02em;
-      text-decoration: none;
-      transition: color .25s;
-    }
-    .name:hover { color: var(--accent); }
-
-    .theme-toggle {
-      all: unset;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      margin: -10px -10px -10px 0;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: var(--ink);
-      transition: color .2s, background-color .2s;
-    }
-    .theme-toggle:hover { color: var(--accent); background: var(--tint); }
-    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .theme-toggle svg {
-      grid-area: 1 / 1;
-      width: 19px;
-      height: 19px;
-      transition: opacity .3s, transform .5s var(--ease);
-    }
-    .theme-toggle .sun { opacity: 0; transform: rotate(-90deg) scale(.6); }
-    [data-theme="dark"] .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(.6); }
-    [data-theme="dark"] .theme-toggle .sun { opacity: 1; transform: none; }
-
-    /* ---------- Track and sections ---------- */
-
-    .track { padding: 0 var(--gutter) 18vh; }
-
-    .hero {
-      max-width: 960px;
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-bottom: 4vh;
-      transition: opacity var(--dur) var(--ease);
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-weight: 500;
-      font-size: clamp(30px, 3.9vw, 54px);
-      line-height: 1.03;
-      letter-spacing: -.035em;
-      text-wrap: balance;
-    }
-
-    .sec {
-      max-width: 1000px;
-      margin-top: 22vh;
-      display: flex;
-      flex-direction: column;
-      transition: opacity var(--dur) var(--ease);
-    }
-
-    .label {
-      margin: 0 0 48px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .co-name { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.35; letter-spacing: -.015em; }
-    .co-where { font-size: 14px; color: var(--muted); }
-
-    .role { display: flex; flex-direction: column; gap: 10px; }
-
-    .role-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 24px;
-      font-size: 15px;
-    }
-    .role-title { margin: 0; font-size: inherit; font-weight: 600; }
-    .role-title span { font-weight: 400; color: var(--muted); white-space: nowrap; }
-
-    .when {
-      font-size: 15px;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-    .when.now { color: var(--accent); font-weight: 600; }
-
-    .hook {
-      margin: 0;
-      font-weight: 400;
-      font-size: clamp(18px, 1.45vw, 20px);
-      line-height: 1.32;
-      letter-spacing: -.015em;
-    }
-
-    /*
-     * Experience timeline: a year and a dot for each role on a thin rail,
-     * then the company (on its first role only) and the role itself.
-     * The rail draws downward when the section arrives.
-     */
-    .timeline {
-      --rail: 64px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 44px;
-    }
-    .tl-item {
-      position: relative;
-      display: grid;
-      grid-template-columns: 88px 230px minmax(0, 1fr);
-      column-gap: 32px;
-    }
-    .tl-year {
-      position: relative;
-      font-size: 15px;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-      line-height: 1.5;
-    }
-    .tl-year::after {
-      content: '';
-      position: absolute;
-      top: .5em;
-      left: var(--rail);
-      width: 9px;
-      height: 9px;
-      margin-left: -4.5px;
-      border: 1.5px solid color-mix(in srgb, var(--accent) 55%, var(--muted));
-      border-radius: 50%;
-      background: var(--bg);
-    }
-    .tl-item:not(:last-child)::before {
-      content: '';
-      position: absolute;
-      top: calc(.75em + 9px);
-      left: var(--rail);
-      width: 1.5px;
-      height: calc(100% + 44px - 9px);
-      margin-left: -.75px;
-      background: color-mix(in srgb, var(--accent) 35%, var(--line));
-      transform-origin: top;
-    }
-    .tl-item.now .tl-year { color: var(--accent); font-weight: 600; }
-    .tl-item.now .tl-year::after { background: var(--accent); border-color: var(--accent); }
-    .tl-co { display: flex; flex-direction: column; }
-    .timeline.plain .tl-item::before,
-    .timeline.plain .tl-year::after { display: none; }
-
-    .degree {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 24px;
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 48px;
-      font-size: clamp(20px, 1.7vw, 24px);
-      font-weight: 500;
-      letter-spacing: -.02em;
-    }
-    .links a { display: inline-block; transition: color .2s, text-decoration-color .2s, transform .15s; }
-    .links a:active { transform: scale(.97); }
-    .links .arrow { color: var(--accent); }
-
-    .copy {
-      all: unset;
-      cursor: pointer;
-      margin-top: 18px;
-      display: inline-flex;
-      align-items: baseline;
-      gap: 10px;
-      min-height: 44px;
-      color: var(--muted);
-      transition: color .2s, transform .15s;
-    }
-    .copy:hover { color: var(--ink); }
-    .copy:active { transform: scale(.98); }
-    .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-    .copy small {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      opacity: 0;
-      transition: opacity .2s;
-    }
-    .copy:hover small,
-    .copy:focus-visible small,
-    .copy.done small { opacity: 1; }
-
-    /* ---------- Scroll hint and progress dots ---------- */
-
-    .hint, .dots { display: none; }
-
-    /* ---------- Motion (only when JavaScript is running) ---------- */
-
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: none; }
-    }
-    @keyframes word-up {
-      from { transform: translateY(110%); }
-      to   { transform: none; }
-    }
-    @keyframes nudge {
-      50% { transform: translateY(5px); }
-    }
-
-    .js .bar { animation: fade-up .9s var(--ease) both; }
-
-    /* The opening line rises in word by word from behind a mask. */
-    .js .hero .word {
-      display: inline-block;
-      overflow: hidden;
-      vertical-align: top;
-      padding-bottom: .12em;
-      margin-bottom: -.12em;
-    }
-    .js .hero .word > span {
-      display: inline-block;
-      animation: word-up 1.15s var(--ease) both;
-      animation-delay: calc(250ms + var(--wi) * 55ms);
-    }
-
-    /* Each section's children slide up in turn when it arrives. */
-    .js .sec > * {
-      opacity: 0;
-      transform: translateY(var(--rise));
-      transition:
-        opacity calc(var(--dur) * .55) var(--ease),
-        transform calc(var(--dur) * .55) var(--ease);
-    }
-    .js .sec.in > * {
-      opacity: 1;
-      transform: none;
-      transition-duration: var(--dur);
-      transition-delay: calc(var(--dur) * .15 + var(--i, 0) * 110ms);
-    }
-    .js .dimmed { opacity: var(--dim); }
-
-    /* The timeline rail draws down one role at a time; the current role's dot pulses once. */
-    @keyframes ring {
-      from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
-      to   { box-shadow: 0 0 0 10px transparent; }
-    }
-    .js .tl-item::before { transform: scaleY(0); transition: transform .45s ease-in-out; }
-    .js .tl-year::after { transform: scale(0); transition: transform .4s var(--ease); }
-    .js .sec.in .tl-item::before {
-      transform: none;
-      transition-delay: calc(var(--dur) * .45 + var(--n) * 260ms);
-    }
-    .js .sec.in .tl-year::after {
-      transform: none;
-      transition-delay: calc(var(--dur) * .3 + var(--n) * 260ms);
-    }
-    .js .sec.in .tl-item.now .tl-year::after { animation: ring 1.4s ease-out calc(var(--dur) * .3 + 400ms) 2; }
-
-    .js .hint {
-      position: fixed;
-      inset: auto 0 28px;
-      display: flex;
-      justify-content: center;
-      pointer-events: none;
-      transition: opacity .35s, visibility .35s;
-    }
-    .js .hint > span {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      animation: fade-up 1s ease .9s both;
-    }
-    .js .hint i { display: inline-block; font-style: normal; color: var(--accent); animation: nudge 1.8s ease-in-out infinite; }
-    .js .hint.gone { opacity: 0; visibility: hidden; }
-
-    /* Desktop: stepped navigation. */
-    .stepped body { height: 100vh; overflow: hidden; }
-    /* `clip`, unlike `hidden`, also stops focus from scrolling the viewport box. */
-    .stepped .viewport { position: fixed; inset: 0; overflow: hidden; overflow: clip; }
-    .stepped .track {
-      padding-bottom: 100vh;
-      will-change: transform;
-      transition: transform var(--dur) var(--ease);
-    }
-
-    .stepped .dots {
-      position: fixed;
-      top: 50%;
-      right: clamp(16px, 3vw, 40px);
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    /* Each dot is a 24px target around an 8px mark; its section name shows on hover. */
-    .dots button {
-      all: unset;
-      position: relative;
-      cursor: pointer;
-      width: 24px;
-      height: 24px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-    }
-    .dots button::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--line);
-      transition: background .3s, transform .3s;
-    }
-    .dots button::after {
-      content: attr(aria-label);
-      position: absolute;
-      right: 30px;
-      font-size: 13px;
-      color: var(--muted);
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateX(4px);
-      transition: opacity .2s, transform .3s var(--ease);
-      pointer-events: none;
-    }
-    .dots button:hover::before { background: color-mix(in srgb, var(--accent) 50%, var(--line)); }
-    .dots button:hover::after,
-    .dots button:focus-visible::after { opacity: 1; transform: none; }
-    .dots button[aria-current="true"]::before { background: var(--accent); transform: scale(1.3); }
-    .dots button:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
-
-    /*
-     * Phones and touch screens: native scrolling, sections reveal as they enter.
-     * Each swipe settles on the start of the next section, just below the name
-     * bar (html's scroll-padding-top). A section taller than the screen can be
-     * read through freely before the next snap.
-     */
-    /* Solid behind the name, so scrolled text never shows through it, then a soft fade into the scene below. */
-    .native .bar { background: var(--bg); }
-    .native .bar::after {
-      content: '';
-      position: absolute;
-      inset: 100% 0 auto;
-      height: 48px;
-      background: linear-gradient(var(--bg), transparent);
-      pointer-events: none;
-    }
-    .native { scroll-snap-type: y mandatory; }
-    .native .hero,
-    .native .sec { scroll-snap-align: start; scroll-snap-stop: always; }
-    /* Leave room below the last section so its start can reach the top. */
-    .native .sec:last-child { min-height: calc(100svh - 100px); }
-
-    @media (max-width: 760px) {
-      :root { --gutter: 20px; }
-      .bar { padding-block: 20px; }
-      .name { font-size: 18px; }
-      .sec { margin-top: 14vh; }
-      .label { margin-bottom: 36px; }
-      .timeline { --rail: 50px; gap: 36px; }
-      .tl-item { grid-template-columns: 64px minmax(0, 1fr); row-gap: 12px; }
-      .tl-item::before { height: calc(100% + 36px - 9px) !important; }
-      .tl-co, .tl-item > .role, .tl-item > .degree { grid-column: 2; }
-      .tl-co:empty { display: none; }
-      .role-top, .degree { flex-direction: column; align-items: flex-start; gap: 2px; }
-      .links { flex-direction: column; gap: 14px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      :root { --dur: 1ms; }
-      *, *::before, *::after { animation: none !important; }
-    }
-
-    /* ---------- A live distributed system behind the opening line (bg.js) ---------- */
-    /* Full bleed, no mask: the scene keeps its own contrast low behind the text. */
-    #bg3d {
-      position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0;
-      pointer-events: none; opacity: 0;
-    }
-    .viewport { position: relative; z-index: 1; }
-  </style>
+</style>
 </head>
 <body>
-<canvas id="bg3d" aria-hidden="true"></canvas>
-
+<div class="page">
+<div class="wrap">
 <header class="bar">
-  <a class="name" href="#hero" id="home">Nikhil Pawar</a>
-  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Dark theme" aria-pressed="false" title="Switch to dark theme">
-    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M10.46 3.64A8.5 8.5 0 1 0 20.36 13.54A7 7 0 0 1 10.46 3.64z"/>
-    </svg>
-    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4"/>
-      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>
-    </svg>
-  </button>
+<a class="name" href="#top">Nikhil Pawar</a>
+<nav aria-label="Contact">
+<a href="mailto:pawarnikhilp@gmail.com?subject=Hello%20Nikhil">Email</a>
+<a href="https://www.linkedin.com/in/nikhil-pawar" rel="me">LinkedIn</a>
+<button type="button" class="toggle" id="theme-toggle" aria-label="Dark theme" aria-pressed="false" title="Switch to dark theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.46 3.64A8.5 8.5 0 1 0 20.36 13.54A7 7 0 0 1 10.46 3.64z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
+</nav>
 </header>
-
-<div class="viewport">
-  <main class="track" id="track">
-    <section class="hero" id="hero">
-      <h1>I design and build <span class="accent">distributed systems</span> from the first sketch to production, currently as a software engineer at <span class="accent">Amazon Web Services</span></h1>
-    </section>
-
-    <section class="sec" data-name="Experience" aria-labelledby="experience">
-      <h2 class="label" id="experience">Experience</h2>
-      <ol class="timeline">
-        <li class="tl-item now" style="--n: 0">
-          <div class="tl-year">2026</div>
-          <div class="tl-co">
-            <h3 class="co-name">Amazon Web Services</h3>
-            <span class="co-where">Seattle</span>
-          </div>
-          <div class="role">
-            <div class="role-top">
-              <h4 class="role-title">Software Development Engineer II <span>Applied AI</span></h4>
-              <span class="when now">Apr 2026 – now</span>
-            </div>
-            <p class="hook">Building the distributed backend and AI agents for a stealth product that helps teams and agents share context and move faster.</p>
-          </div>
-        </li>
-        <li class="tl-item" style="--n: 1">
-          <div class="tl-year">2024</div>
-          <div class="tl-co"></div>
-          <div class="role">
-            <div class="role-top">
-              <h4 class="role-title">Software Development Engineer <span>End User Computing</span></h4>
-              <span class="when">Feb 2024 – Apr 2026</span>
-            </div>
-            <p class="hook">Built backend microservices and Android applications that let users securely stream Amazon WorkSpaces virtual desktops to AWS Thin Client devices.</p>
-          </div>
-        </li>
-        <li class="tl-item" style="--n: 2">
-          <div class="tl-year">2023</div>
-          <div class="tl-co"></div>
-          <div class="role">
-            <div class="role-top">
-              <h4 class="role-title">Software Development Engineer Intern <span>Amazon Connect</span></h4>
-              <span class="when">May 2023 – Aug 2023</span>
-            </div>
-            <p class="hook">Built core frontend features for Connect Guides, the step-by-step workflows that walk contact-center agents through customer calls.</p>
-          </div>
-        </li>
-        <li class="tl-item" style="--n: 3">
-          <div class="tl-year">2022</div>
-          <div class="tl-co">
-            <h3 class="co-name">University of Southern California, Information Sciences Institute</h3>
-            <span class="co-where">Los Angeles</span>
-          </div>
-          <div class="role">
-            <div class="role-top">
-              <h4 class="role-title">Frontend Developer <span>Part-time, while a student</span></h4>
-              <span class="when">May 2022 – May 2023</span>
-            </div>
-            <p class="hook">Built features for a biomedical research platform that helps medical researchers view and annotate high-resolution images in the browser.</p>
-          </div>
-        </li>
-        <li class="tl-item" style="--n: 4">
-          <div class="tl-year">2019</div>
-          <div class="tl-co">
-            <h3 class="co-name">Tata Consultancy Services</h3>
-            <span class="co-where">Mumbai</span>
-          </div>
-          <div class="role">
-            <div class="role-top">
-              <h4 class="role-title">Software Engineer</h4>
-              <span class="when">Jun 2019 – Jun 2021</span>
-            </div>
-            <p class="hook">Built Java backend services and APIs for reliable, scalable data processing in enterprise workflows.</p>
-          </div>
-        </li>
-      </ol>
-    </section>
-
-    <section class="sec" data-name="Education" aria-labelledby="education">
-      <h2 class="label" id="education">Education</h2>
-      <ol class="timeline plain">
-        <li class="tl-item">
-          <div class="tl-year">2023</div>
-          <div class="tl-co">
-            <h3 class="co-name">University of Southern California</h3>
-            <span class="co-where">Los Angeles</span>
-          </div>
-          <div class="degree">
-            <p class="hook">Master of Science in Computer Science</p>
-            <span class="when">2022 – 2023</span>
-          </div>
-        </li>
-        <li class="tl-item">
-          <div class="tl-year">2019</div>
-          <div class="tl-co">
-            <h3 class="co-name">University of Mumbai</h3>
-            <span class="co-where">Mumbai</span>
-          </div>
-          <div class="degree">
-            <p class="hook">Bachelor of Engineering in Computer Engineering</p>
-            <span class="when">2015 – 2019</span>
-          </div>
-        </li>
-      </ol>
-    </section>
-
-    <section class="sec" data-name="Contact" aria-labelledby="contact">
-      <h2 class="label" id="contact">Contact</h2>
-      <div class="links">
-        <a href="mailto:pawarnikhilp@gmail.com?subject=Hello%20Nikhil">Email me <span class="arrow" aria-hidden="true">↗</span></a>
-        <a href="https://www.linkedin.com/in/nikhil-pawar" target="_blank" rel="noopener">LinkedIn <span class="arrow" aria-hidden="true">↗</span></a>
-      </div>
-      <div>
-        <button type="button" class="copy" id="copy-email" data-email="pawarnikhilp@gmail.com">
-          <span>pawarnikhilp@gmail.com</span>
-          <small>Copy</small>
-        </button>
-        <span class="visually-hidden" aria-live="polite" id="copy-status"></span>
-      </div>
-    </section>
-  </main>
+<main id="top" class="v-c">
+<section class="intro" id="intro"><p class="hi"><span class="wave" role="img" aria-label="waving hand">👋</span> Hi, I’m Nikhil.</p><p>I like building <span class="lit">distributed systems</span> and microservices, taking them from the first design to production and making sure they hold up at scale.</p><p class="quiet">Right now I’m building at <span class="lit">Amazon Web Services</span>.</p></section>
+<section class="sec" aria-labelledby="work"><h2 id="work">Work</h2><ul class="list"><li class="row"><div class="rail"><div class="yr">2026 – now</div><div class="city">Seattle</div></div><div><div class="role">Software Development Engineer II <span class=team><span class=sep>· </span>Applied AI</span></div><div class="org">Amazon Web Services</div><p class="line">Agentic engineering for a stealth product: the distributed backend, the AI agents, and the context they share, so teams and agents can move faster.</p></div></li><li class="row"><div class="rail"><div class="yr">2024 – 2026</div><div class="city">Seattle</div></div><div><div class="role">Software Development Engineer <span class=team><span class=sep>· </span>End User Computing</span></div><div class="org">Amazon Web Services</div><p class="line">Backend microservices and on-device Android apps for AWS Thin Client, so people can securely stream Amazon WorkSpaces virtual desktops.</p></div></li><li class="row"><div class="rail"><div class="yr">2023</div><div class="city">Seattle</div></div><div><div class="role">Software Development Engineer Intern <span class=team><span class=sep>· </span>Amazon Connect</span></div><div class="org">Amazon Web Services</div><p class="line">Core frontend features for Connect Guides, the step-by-step workflows that walk contact-center agents through customer calls.</p></div></li><li class="row"><div class="rail"><div class="yr">2022 – 2023</div><div class="city">Los Angeles</div></div><div><div class="role">Frontend Developer <span class=team><span class=sep>· </span>Part-time</span></div><div class="org">USC Information Sciences Institute</div><p class="line">Features for a biomedical research platform where researchers view and annotate high-resolution images in the browser.</p></div></li><li class="row"><div class="rail"><div class="yr">2019 – 2021</div><div class="city">Mumbai</div></div><div><div class="role">Software Engineer</div><div class="org">Tata Consultancy Services</div><p class="line">Java backend services and APIs for reliable, scalable data processing in enterprise workflows.</p></div></li></ul></section>
+<section class="sec" aria-labelledby="edu"><h2 id="edu">Education</h2><ul class="list"><li class="row"><div class="rail"><div class="yr">2022 – 2023</div></div><div><div class="role">M.S. Computer Science</div><div class="org">University of Southern California</div></div></li><li class="row"><div class="rail"><div class="yr">2015 – 2019</div></div><div><div class="role">B.E. Computer Engineering</div><div class="org">University of Mumbai</div></div></li></ul></section>
+<section class="sec read" id="reading" aria-labelledby="reading-h" hidden><h2 id="reading-h">Reading</h2><ul class="list"></ul></section>
+</main>
+<footer class="foot">Updated October 2026</footer>
 </div>
-
-<div class="hint" id="hint" aria-hidden="true"><span>Scroll <i>↓</i></span></div>
-<nav class="dots" id="dots" aria-label="Sections"></nav>
-
+</div>
+<script type="application/json" id="shelf">[]</script>
 <script>
-(() => {
   const root = document.documentElement;
-  const viewport = document.querySelector('.viewport');
-  const track = document.getElementById('track');
-  const hero = document.getElementById('hero');
-  const hint = document.getElementById('hint');
-  const dotsNav = document.getElementById('dots');
-  const sections = [...document.querySelectorAll('.sec')];
-  const lastStep = sections.length;
-
-  // Stagger each section's children as they slide in.
-  sections.forEach(s => [...s.children].forEach((child, i) => child.style.setProperty('--i', i)));
-
-  /* ---------- Opening line: split into masked words ---------- */
-
-  // The animated words are hidden from screen readers, which get the whole
-  // sentence once, as plain text, from a visually hidden copy.
-  (function splitWords(heading) {
-    const sentence = heading.textContent.trim();
-    let index = 0;
-    const walk = node => {
-      [...node.childNodes].forEach(child => {
-        if (child.nodeType === Node.ELEMENT_NODE) return walk(child);
-        if (child.nodeType !== Node.TEXT_NODE) return;
-        const frag = document.createDocumentFragment();
-        child.textContent.split(/(\s+)/).forEach(part => {
-          if (!part) return;
-          if (/^\s+$/.test(part)) return frag.append(' ');
-          const word = document.createElement('span');
-          const inner = document.createElement('span');
-          word.className = 'word';
-          word.setAttribute('aria-hidden', 'true');
-          inner.textContent = part;
-          inner.style.setProperty('--wi', index++);
-          word.append(inner);
-          frag.append(word);
-        });
-        child.replaceWith(frag);
-      });
-    };
-    walk(heading);
-
-    const text = document.createElement('span');
-    text.className = 'visually-hidden';
-    text.textContent = sentence;
-    heading.prepend(text);
-  })(hero.querySelector('h1'));
-
-  /* ---------- Opening line highlight on touch ---------- */
-
-  // Mice use :hover. On touch screens a tap on the line lights it up, and a tap
-  // anywhere else, or scrolling the line out of view, turns it off again.
-  const heading = hero.querySelector('h1');
-  addEventListener('touchstart', e => {
-    heading.classList.toggle('lit', e.target instanceof Node && heading.contains(e.target));
-  }, { passive: true });
-  new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) heading.classList.remove('lit');
-  }).observe(heading);
 
   /* ---------- Theme ---------- */
-
   const themeBtn = document.getElementById('theme-toggle');
   const themeColor = document.querySelector('meta[name="theme-color"]');
-
   function setTheme(theme, save) {
     const dark = theme === 'dark';
-    if (dark) root.dataset.theme = 'dark';
-    else delete root.dataset.theme;
+    if (dark) root.dataset.theme = 'dark'; else delete root.dataset.theme;
     themeBtn.setAttribute('aria-pressed', String(dark));
     themeBtn.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
-    themeColor.content = getComputedStyle(root).getPropertyValue('--bg').trim();
+    themeColor.content = dark ? '#161513' : '#f5f2eb';
     if (save) try { localStorage.setItem('theme', theme); } catch {}
   }
   setTheme(root.dataset.theme === 'dark' ? 'dark' : 'light', false);
-
-  // Until the visitor picks a theme with the toggle, follow the system as it changes.
+  // Until the visitor picks a theme, follow the system as it changes.
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     let saved = null;
     try { saved = localStorage.getItem('theme'); } catch {}
     if (!saved) setTheme(e.matches ? 'dark' : 'light', false);
   });
-
   themeBtn.addEventListener('click', e => {
-    // A mouse click shouldn't leave a focus ring behind; keyboard focus stays.
     if (e.detail > 0) themeBtn.blur();
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!document.startViewTransition || calm || document.visibilityState !== 'visible') return setTheme(next, true);
-    // The cross-fade is decoration: if the browser skips it, the theme still changes.
+    if (!document.startViewTransition || calm) return setTheme(next, true);
     const fade = document.startViewTransition(() => setTheme(next, true));
     fade.ready.catch(() => {});
-    fade.finished.catch(() => {});
   });
 
-  /* ---------- Copy email ---------- */
+  /* ---------- Highlight: hover on desktop, tap on touch ---------- */
+  const intro = document.getElementById('intro');
+  intro.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') intro.classList.toggle('on'); });
 
-  const copyBtn = document.getElementById('copy-email');
-  const copyTag = copyBtn.querySelector('small');
-  const copyStatus = document.getElementById('copy-status');
-  let copyTimer;
-
-  copyBtn.addEventListener('click', async () => {
-    let copied = false;
-    try {
-      await navigator.clipboard.writeText(copyBtn.dataset.email);
-      copied = true;
-    } catch {
-      // No Clipboard API (older browser or insecure origin): select the address
-      // and copy it the old way. If that fails too, it stays selected to copy by hand.
-      const selection = getSelection();
-      const range = document.createRange();
-      range.selectNodeContents(copyBtn.querySelector('span'));
-      selection.removeAllRanges();
-      selection.addRange(range);
-      copied = document.execCommand('copy');
-      if (copied) selection.removeAllRanges();
+  /* ---------- Reading shelf: hidden while the list is empty ---------- */
+  let shelf = [];
+  try { shelf = JSON.parse(document.getElementById('shelf').textContent); } catch {}
+  if (shelf.length) {
+    const sec = document.getElementById('reading'), ul = sec.querySelector('ul');
+    for (const { title, url, note } of shelf) {
+      const li = document.createElement('li'); li.className = 'row';
+      const site = document.createElement('span'); site.className = 'yr';
+      try { site.textContent = new URL(url).hostname.replace(/^www\./, ''); } catch {}
+      const div = document.createElement('div'), a = document.createElement('a');
+      a.href = url; a.textContent = title; div.append(a);
+      if (note) { const p = document.createElement('p'); p.className = 'line'; p.textContent = note; div.append(p); }
+      li.append(site, div); ul.append(li);
     }
-    if (!copied) return;
-
-    copyTag.textContent = 'Copied';
-    copyBtn.classList.add('done');
-    copyStatus.textContent = 'Email address copied';
-    clearTimeout(copyTimer);
-    copyTimer = setTimeout(() => {
-      copyTag.textContent = 'Copy';
-      copyBtn.classList.remove('done');
-      copyStatus.textContent = '';
-    }, 1800);
-  });
-
-  /* ---------- Desktop: stepped navigation ---------- */
-
-  const nativeQuery = matchMedia('(max-width: 760px), (pointer: coarse)');
-  let mode = '';      // 'stepped' or 'native', set by applyMode()
-  const isStepped = () => mode === 'stepped';
-
-  let step = 0;       // 0 = opening line, then one per section
-  let y = 0;          // current track offset in px
-  let busyUntil = 0;  // ignore input until the current move settles
-  const ready = () => performance.now() >= busyUntil;
-
-  // At least 400ms, so one gesture can't skip sections when reduced motion
-  // makes the moves themselves instant.
-  const settleTime = () => {
-    const dur = parseFloat(getComputedStyle(root).getPropertyValue('--dur')) || 1000;
-    return Math.max(400, dur * .9);
-  };
-
-  // Progress dots: one for the opening, then one per section.
-  const dots = ['Introduction', ...sections.map(s => s.dataset.name)].map((name, i) => {
-    const dot = document.createElement('button');
-    dot.type = 'button';
-    dot.setAttribute('aria-label', name);
-    dot.addEventListener('click', () => go(i));
-    dotsNav.append(dot);
-    return dot;
-  });
-
-  const topGap = () => Math.max(innerHeight * .16, 120);
-
-  // Where a section rests when it arrives: its start just below the top bar.
-  const startY = n => (n === 0 ? 0 : Math.max(0, sections[n - 1].offsetTop - topGap()));
-
-  // How far we can move while staying on a section taller than the screen.
-  const endY = n => {
-    if (n === 0) return 0;
-    const s = sections[n - 1];
-    return Math.max(startY(n), s.offsetTop + s.offsetHeight - innerHeight * .88);
-  };
-
-  const clampY = (n, value) => Math.min(Math.max(value, startY(n)), endY(n));
-
-  function render() {
-    if (!isStepped()) return;
-    track.style.transform = `translate3d(0, ${-y}px, 0)`;
-    sections.forEach((s, i) => {
-      s.classList.toggle('in', i < step);
-      s.classList.toggle('dimmed', i < step - 1);
-    });
-    hero.classList.toggle('dimmed', step > 0);
-    if (step > 0) heading.classList.remove('lit');
-    dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === step)));
-    hint.classList.toggle('gone', step > 0);
+    sec.hidden = false;
   }
-
-  function move(nextStep, nextY) {
-    step = nextStep;
-    y = nextY;
-    busyUntil = performance.now() + settleTime();
-
-    // Don't leave keyboard focus on a link in a section that just slid away.
-    const focused = document.activeElement;
-    const focusedStep = sections.findIndex(s => s.contains(focused)) + 1;
-    if (focusedStep && focusedStep !== step) focused.blur();
-
-    render();
-  }
-
-  const go = n => {
-    n = Math.max(0, Math.min(lastStep, n));
-    if (n !== step || y !== startY(n)) move(n, startY(n));
-  };
-
-  // Down: move through a tall section first, then bring in the next one.
-  function next() {
-    if (step > 0 && y < endY(step) - 4) return move(step, Math.min(endY(step), y + innerHeight * .6));
-    if (step < lastStep) go(step + 1);
-  }
-
-  // Up: the reverse, always landing on a section's start.
-  function prev() {
-    if (step > 0 && y > startY(step) + 4) return move(step, Math.max(startY(step), y - innerHeight * .6));
-    if (step > 0) move(step - 1, startY(step - 1));
-  }
-
-  // One step per wheel gesture. Trackpad inertia keeps firing small, decaying
-  // deltas after a flick; those are ignored until a fresh gesture starts.
-  let lastWheel = 0;
-  let lastDelta = 0;
-  addEventListener('wheel', e => {
-    // Leave ctrl/pinch zoom and sideways swipes (history navigation) to the browser.
-    if (!isStepped() || e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-    e.preventDefault();
-    const now = performance.now();
-    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1; // lines/pages to px
-    const delta = Math.abs(e.deltaY) * unit;
-    const fresh = now - lastWheel > 220 || delta > lastDelta * 1.4;
-    lastWheel = now;
-    lastDelta = delta;
-    if (!ready() || !fresh || delta < 4) return;
-    e.deltaY > 0 ? next() : prev();
-  }, { passive: false });
-
-  addEventListener('keydown', e => {
-    if (!isStepped() || e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
-    // Space on a link or button activates it instead of moving the page.
-    if (e.key === ' ' && e.target instanceof Element && e.target.closest('a, button')) return;
-
-    const down = e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey);
-    const up = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
-    if (down || up) {
-      e.preventDefault();
-      if (ready()) down ? next() : prev();
-    } else if (e.key === 'Home' || e.key === 'End') {
-      e.preventDefault();
-      go(e.key === 'Home' ? 0 : lastStep);
-    }
-  });
-
-  // Keyboard focus moving into a section (Tab) brings that section in, and
-  // keeps the focused element on screen even in a section taller than the viewport.
-  document.addEventListener('focusin', e => {
-    if (!isStepped()) return;
-    const n = sections.findIndex(s => s.contains(e.target)) + 1;
-    if (!n) return;
-    const box = e.target.getBoundingClientRect();
-    const top = box.top - track.getBoundingClientRect().top; // position within the track
-    let target = n === step ? y : startY(n);
-    if (top < target + topGap() || top + box.height > target + innerHeight * .88) target = top - topGap();
-    target = clampY(n, target);
-    if (n !== step || target !== y) move(n, target);
-  });
-
-  // Browsers without `overflow: clip` can still scroll the viewport box to
-  // show a focused element; the track does all the moving here.
-  viewport.addEventListener('scroll', () => { viewport.scrollTop = 0; });
-
-  // A touch screen on a device whose main pointer is a mouse still gets the
-  // stepped layout: a vertical swipe moves one step.
-  let touchStartY = null;
-  addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
-  addEventListener('touchend', e => {
-    if (!isStepped() || touchStartY === null) return;
-    const swipe = touchStartY - e.changedTouches[0].clientY;
-    touchStartY = null;
-    if (Math.abs(swipe) > 40 && ready()) swipe > 0 ? next() : prev();
-  }, { passive: true });
-
-  /* ---------- Phones: normal scrolling ---------- */
-
-  const observer = new IntersectionObserver(entries => {
-    if (isStepped()) return;
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('in');
-      else if (entry.boundingClientRect.top > 0) entry.target.classList.remove('in');
-    });
-  }, { rootMargin: '0px 0px -12% 0px' });
-  sections.forEach(s => observer.observe(s));
-
-  addEventListener('scroll', () => {
-    if (!isStepped()) hint.classList.toggle('gone', scrollY > 20);
-  }, { passive: true });
-
-  /* ---------- Mode switching ---------- */
-
-  function applyMode() {
-    const previous = mode;
-    mode = nativeQuery.matches ? 'native' : 'stepped';
-    if (mode === previous) return;
-
-    // Keep the reader's place when a resize crosses the breakpoint.
-    if (previous === 'native') step = sections.filter(s => s.classList.contains('in')).length;
-
-    root.classList.toggle('native', mode === 'native');
-    root.classList.toggle('stepped', mode === 'stepped');
-    [hero, ...sections].forEach(el => el.classList.remove('dimmed'));
-
-    if (mode === 'native') {
-      track.style.transform = '';
-      if (previous === 'stepped') scrollTo(0, startY(step));
-      sections.forEach(s => s.classList.toggle('in', s.getBoundingClientRect().top < innerHeight * .88));
-      hint.classList.toggle('gone', scrollY > 20);
-    } else {
-      scrollTo(0, 0);
-      y = startY(step);
-      track.style.transition = 'none'; // jump straight to the position, no slide
-      render();
-      void track.offsetHeight;
-      track.style.transition = '';
-    }
-  }
-
-  // The name in the top bar returns to the opening line.
-  document.getElementById('home').addEventListener('click', e => {
-    e.preventDefault();
-    if (isStepped()) go(0);
-    else scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  });
-
-  nativeQuery.addEventListener('change', applyMode);
-  addEventListener('resize', () => {
-    applyMode();
-    if (!isStepped()) return;
-    y = clampY(step, y);
-    render();
-  });
-
-  applyMode();
-
-  /* ---------- A hello for anyone who opens the console ---------- */
-
-  console.log(
-    '%cHi, fellow engineer.%c\nThanks for looking under the hood.',
-    'font: 600 20px/1.5 system-ui, sans-serif; color: #b4567d;',
-    'font: 14px/1.6 system-ui, sans-serif;'
-  );
-  console.log(
-    'There are only two hard problems in distributed systems:\n' +
-    '2. Exactly-once delivery\n' +
-    '1. Guaranteed order of messages\n' +
-    '2. Exactly-once delivery'
-  );
-})();
 </script>
-<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
-<script type="module" src="bg.js"></script>
 </body>
 </html>
