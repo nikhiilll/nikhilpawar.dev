@@ -32,42 +32,41 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&display=swap">
 <style>
 body{margin:0}
-::view-transition-old(root),::view-transition-new(root){animation-duration:.4s}
 
-.page{--bg:#f5f2eb;--ink:#1d1b17;--org:#45413a;--muted:#8f887a;--soft:#6b665b;--rule:#e8e3d8;--under:#cfc8b8;--accent:#9b4767;--tint:rgba(155,71,103,.16);--ease:cubic-bezier(.7,0,.2,1)}
+.page{--bg:#f5f2eb;--ink:#1d1b17;--org:#45413a;--muted:#746e62;--soft:#5c574d;--rule:#e8e3d8;--under:#cfc8b8;--accent:#9b4767;--tint:rgba(155,71,103,.16);--ease:cubic-bezier(.7,0,.2,1)}
 [data-theme="dark"] .page,.page[data-theme="dark"]{--bg:#161513;--ink:#ecebe6;--org:#d2cdc3;--muted:#8a857a;--soft:#a6a196;--rule:#2a2825;--under:#45413b;--accent:#e3a9bf;--tint:rgba(227,169,191,.18)}
 .page{background:var(--bg);color:var(--ink);font-family:'Geist',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
 .page ::selection{background:var(--tint)}
 .wrap{max-width:680px;margin:0 auto;padding:0 24px}
 a{color:inherit}
-.bar{display:flex;align-items:center;justify-content:space-between;height:88px;font-size:14px}
+.bar{display:flex;align-items:center;justify-content:space-between;height:88px;font-size:15px}
 .bar .name{text-decoration:none;font-weight:500}
-.bar nav{display:flex;align-items:center;gap:22px}
+.bar nav{display:flex;align-items:center;gap:24px}
 .bar nav a{text-decoration:none;color:var(--muted);transition:color .2s}
 .bar nav a:hover{color:var(--ink)}
-.toggle{all:unset;cursor:pointer;width:32px;height:32px;margin-right:-8px;display:grid;place-items:center;border-radius:50%;color:var(--muted);transition:color .2s}
+.toggle{all:unset;cursor:pointer;width:32px;height:32px;margin:0 -10px;display:grid;place-items:center;border-radius:50%;color:var(--muted);transition:color .2s}
 .toggle:hover{color:var(--ink)}
 .toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.toggle svg{grid-area:1/1;width:15px;height:15px;transition:opacity .3s,transform .5s var(--ease)}
+.toggle svg{grid-area:1/1;width:15px;height:15px;transition:opacity .25s,transform .4s var(--ease)}
 .toggle .sun{opacity:0;transform:rotate(-90deg) scale(.6)}
 [data-theme="dark"] .toggle .moon{opacity:0;transform:rotate(90deg) scale(.6)}
 [data-theme="dark"] .toggle .sun{opacity:1;transform:none}
 .intro{margin-top:112px}
 .intro p{margin:0;font-size:28px;line-height:1.45;font-weight:450;letter-spacing:-0.017em}
-.intro p+p{margin-top:22px}
+.intro p+p{margin-top:24px}
 .wave{display:inline-block;margin-right:.08em;transform-origin:70% 75%;animation:wave 1.6s ease-in-out .5s 1}
 .hi:hover .wave{animation:wave 1.6s ease-in-out 1}
 @keyframes wave{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(14deg)}20%{transform:rotate(-8deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
-.sec{margin-top:104px}
-.sec h2{margin:0 0 10px;font-size:16px;font-weight:500;color:var(--ink)}
-.sec+.sec{margin-top:64px}
+.sec{margin-top:96px}
+.sec h2{margin:0 0 12px;font-size:16px;font-weight:500;color:var(--ink)}
+.sec+.sec{margin-top:96px}
 .list,.jobs{list-style:none;margin:0;padding:0}
 .yr{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.city{color:var(--muted);opacity:.8;font-size:14px}
+.city{color:var(--muted)}
 .now{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:2px}
 .role{font-size:16px;font-weight:500}
 .org,.team{color:var(--muted)}
-.line{margin:6px 0 0;color:var(--soft);max-width:520px}
+.line{margin:8px 0 0;color:var(--soft);max-width:520px}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:20px}
 /* A */
 .v-a .co{padding:20px 0 6px;border-top:1px solid var(--rule)}
@@ -81,21 +80,22 @@ a{color:inherit}
 .v-b .job:first-child{padding-top:6px}
 .v-b .rail{text-align:right}
 /* C */
-.v-c .row{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--rule)}
-.v-c .team{font-weight:400;white-space:nowrap}
+.v-c .row{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:baseline;padding:20px 0;border-top:1px solid var(--rule)}
+.v-c .row:last-child{padding-bottom:0}
+.v-c .team{font-size:15px;font-weight:400;white-space:nowrap}
 .v-c .org{color:var(--org)}
 /* reading shelf, when it has links */
 .read .row{display:grid;grid-template-columns:132px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--rule)}
 .read a{text-decoration:underline;text-decoration-color:var(--under);text-underline-offset:.2em}.read a:hover{text-decoration-color:var(--accent)}
-.foot{margin:96px 0 0;padding-bottom:72px;font-size:13px;color:var(--muted)}
+.foot{margin:96px 0 0;padding-bottom:72px;font-size:15px;color:var(--muted)}
 @media (max-width:640px){
   .bar{height:72px}.bar nav{gap:16px}
   .intro{margin-top:56px}.intro p{font-size:23px}
   .v-c .row,.read .row{grid-template-columns:1fr;gap:4px}
-  .v-c .rail{display:flex;gap:10px;align-items:baseline}
+  .v-c .rail{display:flex;gap:16px;align-items:baseline}
   .v-c .team{display:block}.v-c .sep{display:none}
   .v-b .job{gap:12px}
-  .sec{margin-top:72px}
+  .sec,.sec+.sec,.foot{margin-top:72px}
 }
 @media (prefers-reduced-motion:reduce){.wave{animation:none!important}.toggle svg{transition:none}}
 
@@ -146,10 +146,8 @@ a{color:inherit}
   themeBtn.addEventListener('click', e => {
     if (e.detail > 0) themeBtn.blur();
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!document.startViewTransition || calm) return setTheme(next, true);
-    const fade = document.startViewTransition(() => setTheme(next, true));
-    fade.ready.catch(() => {});
+    // The page switches at once; only the icon turns. Fading the whole page made the icon flicker.
+    setTheme(next, true);
   });
 
   /* ---------- Reading shelf: hidden while the list is empty ---------- */
