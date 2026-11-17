@@ -69,13 +69,13 @@ a { color: inherit; }
 
 /* Work: company, then each title, then each team with its own dates in the left column */
 .work .r { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; }
-.work .co + .co { margin-top: 40px; }
+.work .co + .co { margin-top: 56px; }
 .co-name { font-size: 18px; font-weight: 500; letter-spacing: -0.005em; }
 .work .t { font-weight: 500; }
-.work .r + .pos { margin-top: 4px; }
-.work .pos + .pos { margin-top: 12px; }
+.work .r + .pos { margin-top: 8px; }
+.work .pos + .pos { margin-top: 32px; }
 .work .tm { margin-top: 4px; }
-.work .tm + .tm { margin-top: 16px; }
+.work .tm + .tm { margin-top: 28px; }
 .tn { color: var(--fact); }
 .read a { text-decoration: underline; text-decoration-color: var(--under); text-underline-offset: .2em; }
 .read a:hover { text-decoration-color: var(--accent); }
