@@ -11,12 +11,14 @@
 /* ---------- Colours ---------- */
 :root {
   --bg: #f5f2eb; --ink: #1d1b17; --org: #45413a; --muted: #746e62; --soft: #5c574d;
+  --fact: #5c574d; --body: #34312b;
   --rule: #e8e3d8; --under: #cfc8b8; --accent: #9b4767; --tint: rgba(155,71,103,.16);
   --ease: cubic-bezier(.7,0,.2,1);
   color-scheme: light;
 }
 :root[data-theme="dark"] {
   --bg: #161513; --ink: #ecebe6; --org: #d2cdc3; --muted: #8a857a; --soft: #a6a196;
+  --fact: #aaa59a; --body: #dcd8cf;
   --rule: #2a2825; --under: #45413b; --accent: #e3a9bf; --tint: rgba(227,169,191,.18);
   color-scheme: dark;
 }
@@ -59,12 +61,22 @@ a { color: inherit; }
 .list { list-style: none; margin: 0; padding: 24px 0 0; }
 .row { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; }
 .row + .row { margin-top: 32px; }
-.yr { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.city { color: var(--muted); }
+/* Details (dates, team, city) in a mid grey; descriptions a shade darker, as the text you read */
+.yr { color: var(--fact); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .role { font-size: 16px; font-weight: 500; }
-.team { color: var(--muted); font-size: 15px; font-weight: 400; white-space: nowrap; }
 .org { color: var(--org); }
-.line { margin: 8px 0 0; color: var(--soft); max-width: 520px; }
+.line { margin: 6px 0 0; color: var(--body); max-width: 520px; }
+
+/* Work: company, then each title, then each team with its own dates in the left column */
+.work .r { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; }
+.work .co + .co { margin-top: 40px; }
+.co-name { font-size: 16px; font-weight: 500; }
+.work .t { font-weight: 500; }
+.work .r + .pos { margin-top: 4px; }
+.work .pos + .pos { margin-top: 12px; }
+.work .tm { margin-top: 4px; }
+.work .tm + .tm { margin-top: 16px; }
+.tn { color: var(--fact); }
 .read a { text-decoration: underline; text-decoration-color: var(--under); text-underline-offset: .2em; }
 .read a:hover { text-decoration-color: var(--accent); }
 
@@ -76,9 +88,8 @@ a { color: inherit; }
   .intro { margin-top: 56px; }
   .intro p { font-size: 23px; }
   .row { grid-template-columns: 1fr; gap: 4px; }
-  .rail { display: flex; gap: 16px; align-items: baseline; }
-  .team { display: block; }
-  .sep { display: none; }
+  .work .r { grid-template-columns: 1fr; gap: 0; }
+  .work .r > span:empty { display: none; }
   .sec, .foot { margin-top: 72px; }
 }
 @media (prefers-reduced-motion: reduce) {
