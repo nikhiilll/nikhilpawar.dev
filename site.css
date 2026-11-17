@@ -8,18 +8,21 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-body { margin: 0; }
-
 /* ---------- Colours ---------- */
-.page {
+:root {
   --bg: #f5f2eb; --ink: #1d1b17; --org: #45413a; --muted: #746e62; --soft: #5c574d;
   --rule: #e8e3d8; --under: #cfc8b8; --accent: #9b4767; --tint: rgba(155,71,103,.16);
   --ease: cubic-bezier(.7,0,.2,1);
+  color-scheme: light;
 }
-[data-theme="dark"] .page {
+:root[data-theme="dark"] {
   --bg: #161513; --ink: #ecebe6; --org: #d2cdc3; --muted: #8a857a; --soft: #a6a196;
   --rule: #2a2825; --under: #45413b; --accent: #e3a9bf; --tint: rgba(227,169,191,.18);
+  color-scheme: dark;
 }
+/* The page colour also fills the area revealed when scrolling past the top or bottom. */
+html, body { background: var(--bg); }
+body { margin: 0; }
 
 /* ---------- Page ---------- */
 .page { background: var(--bg); color: var(--ink); font-family: 'Geist', system-ui, sans-serif; font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
@@ -51,17 +54,17 @@ a { color: inherit; }
 
 /* ---------- Work, Education, Reading ---------- */
 .sec { margin-top: 96px; }
-.sec h2 { margin: 0 0 12px; font-size: 16px; font-weight: 500; color: var(--ink); }
-.list { list-style: none; margin: 0; padding: 0; }
-.row { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: baseline; padding: 20px 0; border-top: 1px solid var(--rule); }
-.row:last-child { padding-bottom: 0; }
+/* One rule under each heading; entries are separated by space alone. */
+.sec h2 { margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: 16px; font-weight: 500; color: var(--ink); }
+.list { list-style: none; margin: 0; padding: 24px 0 0; }
+.row { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; }
+.row + .row { margin-top: 32px; }
 .yr { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .city { color: var(--muted); }
 .role { font-size: 16px; font-weight: 500; }
 .team { color: var(--muted); font-size: 15px; font-weight: 400; white-space: nowrap; }
 .org { color: var(--org); }
 .line { margin: 8px 0 0; color: var(--soft); max-width: 520px; }
-.read .row { padding: 16px 0; }
 .read a { text-decoration: underline; text-decoration-color: var(--under); text-underline-offset: .2em; }
 .read a:hover { text-decoration-color: var(--accent); }
 
