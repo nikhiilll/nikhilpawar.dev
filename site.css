@@ -57,7 +57,7 @@ a { color: inherit; }
 /* ---------- Work, Education, Reading ---------- */
 .sec { margin-top: 96px; }
 /* One rule under each heading; entries are separated by space alone. */
-.sec h2 { margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: 16px; font-weight: 500; color: var(--ink); }
+.sec h2 { margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--rule); font-size: 20px; letter-spacing: -0.01em; font-weight: 500; color: var(--ink); }
 .list { list-style: none; margin: 0; padding: 24px 0 0; }
 .row { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; }
 .row + .row { margin-top: 32px; }
@@ -70,7 +70,7 @@ a { color: inherit; }
 /* Work: company, then each title, then each team with its own dates in the left column */
 .work .r { display: grid; grid-template-columns: 160px 1fr; gap: 16px; align-items: baseline; }
 .work .co + .co { margin-top: 40px; }
-.co-name { font-size: 16px; font-weight: 500; }
+.co-name { font-size: 18px; font-weight: 500; letter-spacing: -0.005em; }
 .work .t { font-weight: 500; }
 .work .r + .pos { margin-top: 4px; }
 .work .pos + .pos { margin-top: 12px; }
